@@ -8,11 +8,9 @@
 #define CLEAN_SCREEN "cls"
 #elif defined(unix) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__))
 #define CLEAN_SCREEN "clear"
-#elif defined MAC
-#define CLEAN_SCREEN "clear"
 #endif
 
-typedef struct  // cr�e la strcuture pour le fichier jeux
+typedef struct  // crée la strcuture pour le fichier jeux
 {
     int idJeu;
     char nom[25];
@@ -20,7 +18,7 @@ typedef struct  // cr�e la strcuture pour le fichier jeux
     int nbExp;
 } jeu;
 
-typedef struct  // cr�e la structure pour le fichier adherents
+typedef struct  // crée la structure pour le fichier adherents
 {
     int idAdherent;
     char civilite[4];
@@ -88,6 +86,7 @@ void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux);
 nodeType	*saisieNouveauJeu(nodeType *head, int *nbJeux);
 
 // prototypes pour nouvel emprunt/reservation
+int			rechercheAdherent(adherent *tabAdh[], char nom[], int nbAdh);
 void 		nouvelAdherent(adherent *tabAdh[], char date[],int *nbAdh, int max);
 int 		dateIns(adherent *tabAdh[], char date[], int i);
 int			comptNbEmpAdh(emprunt tabEmp[], int idAdh, int nbEmp);
