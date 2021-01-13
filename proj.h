@@ -1,16 +1,18 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<time.h> //bibliotŠque pour la lecture de la date systŠme
-#include<ctype.h> // bibliotqŠue pour le upper et lower char
+#include<time.h> //bibliotÃ¨que pour la lecture de la date systÃ¨me
+#include<ctype.h> // bibliotqÃ¨ue pour le upper et lower char
 
 #if defined WIN32
 #define CLEAN_SCREEN "cls"
 #elif defined __linux
 #define CLEAN_SCREEN "clear"
+#elif defined MAC
+#define CLEAN_SCREEN "clear"
 #endif
 
-typedef struct  // cr‚e la strcuture pour le fichier jeux
+typedef struct  // crÃ©e la strcuture pour le fichier jeux
 {
     int idJeu;
     char nom[25];
@@ -18,7 +20,7 @@ typedef struct  // cr‚e la strcuture pour le fichier jeux
     int nbExp;
 } jeu;
 
-typedef struct  // cr‚e la structure pour le fichier adherents
+typedef struct  // crÃ©e la structure pour le fichier adherents
 {
     int idAdherent;
     char civilite[4];
@@ -27,7 +29,7 @@ typedef struct  // cr‚e la structure pour le fichier adherents
     char dateIns[11];
 } adherent;
 
-typedef struct  // cr‚e la structure pour le fichier adherents et reservation
+typedef struct  // crÃ©e la structure pour le fichier adherents et reservation
 {
     int idEmpResa;
     int idAdherent;
@@ -35,7 +37,7 @@ typedef struct  // cr‚e la structure pour le fichier adherents et reservation
     char dateEmpResa[11];
 } emprunt, reservation, empResa;
 
-typedef struct node //cr‚e la structure pour la liste chain‚
+typedef struct node //crÃ©e la structure pour la liste chainÃ©
 {
     jeu game;
     struct node *next;
