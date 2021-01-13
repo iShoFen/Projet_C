@@ -2,7 +2,7 @@
 
 void global(void)
 {
-	adherent *tabAdh[1000];
+	adherent *tabAdh[100];
 
     emprunt *tabEmp;
 
@@ -11,64 +11,64 @@ void global(void)
     nodeType* head = NULL;
     nodeType* doublon = NULL;
 
-    date date;
-
-	char c;
-	int choix, choixJeu, choixSave;
+    char date[11], c;
+	int choix;
     int nbAdh, nbEmp, nbResa, nbJeux;
-    int nbEmpMax, nbResaMax;
+    int idEmp, nbEmpMax, idResa, nbResaMax;
 
-    head = ChargementJeux(head, &nbJeux); // charge le fichier jeux.txt dans une liste chainÃ©e
-    nbAdh = ChargementAdherents(tabAdh, 1000); // charge le fichier adherent.txt dans un tableau de pointeurs
-    tabEmp = ChargementEmprunt(&nbEmp); // charge le fichier emprunt.txtx dans un tableau tableau allouÃ© dynamiquement
-    tabResa = ChargementReservation(&nbResa); // charge le fichier reservation.txt dans un tableau allouÃ© dynamiquement
-    date = dateNow(date); // permet de connaitre la date du jours en format franÃ§ais jj/mm/aaaa
+    head = ChargementJeux(head, &nbJeux); // charge le fichier jeux.txt dans une liste chain‚e
+    nbAdh = ChargementAdherents(tabAdh, 100); // charge le fichier adherent.txt dans un tableau de pointeurs
+    tabEmp = ChargementEmprunt(&nbEmp, &idEmp); // charge le fichier emprunt.txtx dans un tableau tableau allou‚ dynamiquement
+    tabResa = ChargementReservation(&nbResa, &idResa); // charge le fichier reservation.txt dans un tableau allou‚ dynamiquement
+    dateNow(date); // permet de connaitre la date du jours en format fran‡ais jj/mm/aaaa
     nbEmpMax = nbEmp; 
     nbResaMax = nbResa;
 
     choix = menu(); // permet de connaitre le choix de l'utilsiateur
-	while (choix!=9)
+	while (choix != 10)
     {
         switch (choix)
         {
-            case 1 : choixJeu = menuJeu(); // permet de connaitre choix de l'utilisateur pour l' affichage des jeux 
-                    while (choixJeu != 3)
+            case 1 : choix = menuJeu(); // permet de connaitre choix de l'utilisateur pour l' affichage des jeux 
+                    while (choix != 3)
                     {
-                        switch (choixJeu)
+                        switch (choix)
                         {
-                            case 1 : triAlphaJeu(head, tabEmp, nbEmp); break; // affiche les jeux triÃ©s par ordre alphabÃ©tique
-                            case 2 : triTypeJeu(head, tabEmp, nbEmp); break; // affiche les jeux triÃ©s par type
+                            case 1 : triAlphaJeu(head, tabEmp, nbEmp); break; // affiche les jeux tri‚s par ordre alphab‚tique
+                            case 2 : printAllJeu(head, tabEmp, nbEmp); break; // affiche tous les jeux
                         }
                         fflush(stdin); // fonction permettant de vider le buffer 
-                        printf("\ntapez entree pour continuer ...");
+                        printf("\ntapez entr‚e pour continuer ...");
                         c = getchar();
-                        choixJeu = menuJeu();
+                        choix = menuJeu();
                     } break;
-            case 2 : printEmprunt(tabEmp, date, nbEmp); break; // affiche tous les emprunts en cours
-            case 3 : printResa(tabResa, head, nbResa, nbJeux); break; // affiche toutes les reservation en cours en fonction d'un jeu donnÃ©
-            case 4 : tabEmp = saisieNouvelEmprunt(tabAdh, tabEmp, head, date, &nbAdh, &nbEmp, &nbEmpMax, nbJeux, 1000); break; // permet de saisir un nouvel emprunt
-            case 5 : tabResa = saisieNouvelResa(tabAdh, tabResa, tabEmp, head, date, &nbAdh, &nbResa, &nbResaMax, nbEmp, nbJeux, 1000); break; // saisie d'une nouvelle reservation
-            case 6 : tabEmp = RetourJeu(tabAdh, tabEmp, tabResa, &nbEmp, &nbResa, nbAdh, date); break; // effectue le retour d'un jeu, sa suppression du fichier emprunts.txt et l'actualisation d'une reservation si possible
-            case 7 : tabResa = AnnulationResa(tabAdh, tabResa, &nbResa, nbAdh); break;// annulationresa()
-            case 8 : choixSave = menuSave(); // permet de connaitre choix de l'utilisateur pour la saauvegarde 
-                    while (choixSave != 3)
+            case 2 : printEmprunt(tabEmp, date, nbEmp) ; break; // affiche tous les emprunts en cours
+            case 3 : printResa(tabResa, head, nbResa, nbJeux); break; // affiche toutes les reservation en cours en fonction d'un jeu donn‚
+            case 4 : head = saisieNouveauJeu(head, &nbJeux); break; // cr‚e un nouveau jeu
+            case 5 : tabEmp = saisieNouvelEmprunt(tabAdh, tabEmp, head, date, &nbAdh, &nbEmp, &idEmp, &nbEmpMax, nbJeux, 100); break; // permet de saisir un nouvel emprunt
+            case 6 : tabResa = saisieNouvelResa(tabAdh, tabResa, tabEmp, head, date, &nbAdh, &nbResa, &idResa, &nbResaMax, nbEmp, nbJeux, 100); break; // saisie d'une nouvelle reservation
+            case 7 : tabEmp = RetourJeu(tabAdh, tabEmp, tabResa, &nbEmp, &idEmp, &nbResa, nbAdh, date); break; // effectue le retour d'un jeu, sa suppression du fichier emprunts.txt et l'actualisation d'une reservation si possible
+            case 8 : tabResa = AnnulationResa(tabAdh, tabResa, &nbResa, nbAdh); break;// annulationresa()
+            case 9 : choix = menuSave(); // permet de connaitre choix de l'utilisateur pour la saauvegarde 
+                    while (choix != 3)
                     {
-                        switch (choixSave)
+                        switch (choix)
                         {
                             case 1 : sauvegarder(head, tabAdh, tabEmp, tabResa, nbJeux, nbAdh, nbEmp, nbResa); break; // sauvegarde en fichier binaire
                             case 2 : sauvegarderTxt(head, tabAdh, tabEmp, tabResa, nbJeux, nbAdh, nbEmp, nbResa); break; // sauvegarde en fichier binaire et texte   
                         }
-                        fflush(stdin); // fonction permettant de vider le buffer 
-                        printf("\ntapez entree pour continuer ...");
+                        fflush(stdin);
+                        printf("\ntapez entr‚e pour continuer ...");
                         c = getchar();
-                        choixSave = menuSave();
+                        choix = menuSave();
                     } break;
         }
         fflush(stdin);
-        printf("\ntapez entree pour continuer ...");
+        printf("\ntapez entr‚e pour continuer ...");
         c = getchar();
         choix = menu();
     }
+    
     freeListe(head);
     free(*tabAdh);
     free(tabEmp);

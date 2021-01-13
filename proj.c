@@ -1,20 +1,21 @@
 #include"proj.h"
 
-int 		menu(void)
+int 		menu(void) // Menu principal
 {
 	int choix;
 
-    printf("\n");
-	printf("----------------------------------------------------------------\n");
-	printf("| 1.	Afficher les jeux disponibles				|\n");
+	system(CLEAN_SCREEN);
+	printf("\n-----------------------------------------------------------------\n");
+	printf("| 1.	Afficher les jeux 					|\n");
 	printf("| 2.	Afficher la liste des emprunts				|\n");
-	printf("| 3.	Afficher les reservations pour un jeu			|\n");
-	printf("| 4.	Saisir un nouvel emprunt				|\n");
-	printf("| 5.	Saisir un nouvelle reservation				|\n"); 
-	printf("| 6.	Retour d'un jeu						|\n");
-	printf("| 7.	Annuler une reservation					|\n");
-	printf("| 8.	SAUVEGARDER						|\n");
-	printf("| 9.	QUITTER							|\n");                  
+	printf("| 3.	Afficher les r‚servations pour un jeu			|\n");
+	printf("| 4.	Saisir un nouveau jeu 					|\n");
+	printf("| 5.	Saisir un nouvel emprunt				|\n");
+	printf("| 6.	Saisir une nouvelle r‚servation				|\n"); 
+	printf("| 7.	Retour d'un jeu						|\n");
+	printf("| 8.	Annuler une r‚servation					|\n");
+	printf("| 9.	SAUVEGARDER						|\n");
+	printf("| 10.	QUITTER							|\n");                  
 	printf("-----------------------------------------------------------------\n");
     scanf("%d",&choix);
 	
@@ -22,45 +23,38 @@ int 		menu(void)
 }
 
 
-date 		dateNow(date date) //rÃ©cupÃ¨re la date du jour en format local (france)
+void 		dateNow(char date[]) //r‚cupŠre la date du jour en format local (france)
 {
-	char j[3], m[3], a[5];
+	time_t  now = time (&now);
 
-	time_t  now = time (NULL);
-	strftime(j, sizeof(j), "%d", localtime(&now));
- 	strftime(m, sizeof(m), "%m", localtime(&now));
-	strftime(a, sizeof(a), "%Y", localtime(&now));
-	strcpy(date.jours,j);
-	strcpy(date.mois,m);
-	strcpy(date.annee,a);
-	return date;
+	strftime(date, 11 * sizeof(char*), "%d/%m/%Y", localtime(&now));
 }
 
 
-void 		upper(char tab[]) // met toutes les lettres d'une chaine de charactÃ¨re en maj
+void 		upper(char tab[]) // met toutes les lettres d'une chaine de caractŠres en maj
 {
-	int 	i;
-	for (i = 0; i<strlen(tab);i++)	
+	int i;
+	for (i = 0; i < strlen(tab); i++)	
 		tab[i] = toupper(tab[i]);
 }
 
-void 		upperLower(char tab[]) // met la premiÃ¨re lettre d'une chaine de charactÃ¨re en maj et toutes les autres en min
+void 		upperLower(char tab[]) // met la premiŠre lettre en maj et le reste en min pour une chaine de caractŠres
 {
-	int 	i;
+	int i;
 	tab	[0] = toupper(tab[0]);
-	for (i = 1; i<strlen(tab);i++)
+	for (i = 1; i < strlen(tab); i++)
 		tab[i] = tolower(tab[i]);
 }
 
 
-nodeType	*createNode(jeu	game) // crÃ©e un maillon de liste a partir du jeu passÃ© en paramÃ¨tre, next = NULL pour Ã©viter les erreurs de segmentation
+nodeType	*createNode(jeu	game) // cr‚e un maillon de liste a partir du jeu pass‚ en paramŠtre, next = NULL pour ‚viter les erreurs de segmentation
 {
 	nodeType *node;
-	node = (nodeType*)malloc(sizeof(nodeType));
+	node = (nodeType*) malloc(sizeof(nodeType));
 
 	if (node == NULL)
 	{
-		printf("Probleme d'allocation pour la liste chainee\n");
+		printf("ProblŠme d'allocation pour la liste chainee\n");
 		exit(-1);
 	}
 
@@ -72,7 +66,7 @@ nodeType	*createNode(jeu	game) // crÃ©e un maillon de liste a partir du jeu pass
 
 nodeType	*lastNode(nodeType *head) // renvoie le dernier maillon d'une liste
 {
-	nodeType	*current;
+	nodeType *current;
 
 	current = head;
 
@@ -86,22 +80,21 @@ nodeType	*lastNode(nodeType *head) // renvoie le dernier maillon d'une liste
 	return NULL;
 }
 
-void		createLastNode(nodeType **head, jeu game) // utilise les deux fonctions ci-dessus pour crÃ©er un maillon Ã  la fin de la liste chainÃ©e
+void		createLastNode(nodeType **head, jeu game) // utilise les deux fonctions ci-dessus pour cr‚er un maillon … la fin de la liste chain‚e
 {
 	if (*head != NULL)
-		lastNode(*head)->next = createNode(game); // si *head existe, on prend le dernier maillon et on assigne a son next le maillon que l'on veut insÃ©rer
-		
+		lastNode(*head)->next = createNode(game); // si *head existe, on prend le dernier maillon et on assigne a son next le maillon que l'on veut ins‚rer	
 	else
-		*head = createNode(game); // sinon, on crÃ©e le maillon Ã  la place du premier
+		*head = createNode(game); // sinon, on cr‚e le maillon … la place du premier
 }
 
-nodeType	*ChargementJeux(nodeType *head, int *nbJeux) // utilise les trois fonctions ci-dessus pour charger le fichier 'jeux.txt' dans la liste chainÃ©e
+nodeType	*ChargementJeux(nodeType *head, int *nbJeux) // utilise les trois fonctions ci-dessus pour charger le fichier 'jeux.txt' dans la liste chain‚e
 {
-	FILE 		*flot;
-	jeu			currentGame;
-	int			i;
+	FILE *flot;
+	jeu	currentGame;
+	int	i;
 
-	flot = fopen("jeux.bin","rb");
+	flot = fopen("jeux.bin", "rb");
 
 	if (flot == NULL)
 	{
@@ -113,7 +106,7 @@ nodeType	*ChargementJeux(nodeType *head, int *nbJeux) // utilise les trois fonct
 
 	for (i = 0; i < *nbJeux; i++)
 	{
-		fread(&currentGame, sizeof(jeu), 1, flot);
+		fread(&currentGame, sizeof(jeu), 1, flot);	
 		createLastNode(&head, currentGame);
 	}
 
@@ -122,25 +115,131 @@ nodeType	*ChargementJeux(nodeType *head, int *nbJeux) // utilise les trois fonct
 	return head;
 }
 
-void		freeListe(nodeType *head) // libÃ¨re la liste chainÃ©
+
+int 		ChargementAdherents(adherent *tabAdh[], int max)  //charge le contenu du fichier adherent en m‚moire 
 {
-	nodeType*	currentNode = head;
-	jeu			currentGame;
-	int			nbEmpCurrent;
+	FILE *flot;
+	int i = 0, val;
 	
-	while (currentNode != NULL) 
+	flot = fopen("adherents.bin","rb");
+
+	if (flot == NULL)
 	{
-		currentGame = currentNode->game;
-		free(currentNode);
-		currentNode = currentNode->next;
-    }
+			printf("pb d'ouverture du fichier adherents.bin en lecture\n");
+			exit(1);
+	}
+
+	fread(&val,sizeof(int),1,flot);
+
+	if (val > max)
+	{
+		printf("Tableaux d'adherent trop petit");
+		exit(-2);
+	}
+	
+	while (!feof(flot))
+	{
+		tabAdh[i] = (adherent *) malloc(sizeof(adherent));
+		if (tabAdh[i] == NULL)
+		{
+			printf("Probleme d'allocation en memoire … la %de place pour les adherents",i);
+			exit(-1);
+		}
+		fread(tabAdh[i],sizeof(adherent),1,flot);
+		i++;
+	}
+	fclose(flot);
+
+	return val;
 }
 
-int			comptNbEmp(emprunt tabEmp[], int idJeu, int nbEmp) // compte le nombre d'emprunts en cours d'un jeu donnÃ© en paramÃ¨tre
+
+empResa		*lectureEmpResa(empResa tabEmpResa[], int *nbEmpResa, FILE *flot) // lit le fichier envoy‚ en paramŠtre et remplis le tableau
+{
+	fread(tabEmpResa,sizeof(emprunt),*nbEmpResa,flot);
+	fclose(flot);
+
+	return tabEmpResa;
+}
+
+emprunt		*ChargementEmprunt(int *nbEmp, int *idEmp) // charge le contenu du fichier emprunt en m‚moire
+{
+	emprunt *tabEmp;
+	int i;
+	FILE *flot;
+
+	flot = fopen("emprunt.bin","rb");
+	if (flot == NULL)
+	{	
+		printf("ProblŠme d'ouverture du fichier emprunt.bin en lecture");
+		exit(1);
+	}
+	
+	fread(nbEmp,sizeof(int),1,flot);
+
+	tabEmp = (emprunt *) malloc(*nbEmp * sizeof (emprunt));
+
+	if (tabEmp == NULL)
+	{
+			printf("ProblŠme d'allocation en m‚moire pour les emprunts");
+			exit(-1);
+	}
+
+	tabEmp = lectureEmpResa(tabEmp, nbEmp, flot);
+	*idEmp = tabEmp[*nbEmp-1].idEmpResa;
+	return tabEmp;
+}
+
+reservation *ChargementReservation(int *nbResa, int *idResa) // charge le contenu du fichier reservation en m‚moire
+{
+	reservation *tabResa;
+	int i;
+	FILE *flot;
+	
+	flot = fopen("reservation.bin","rb");
+
+	if (flot == NULL)
+	{	
+		printf("ProblŠme d'ouverture du fichier reservation.bin en lecture");
+		exit(1);
+	}
+
+	fread(nbResa,sizeof(int),1,flot);
+
+	tabResa = (reservation *) malloc(*nbResa * sizeof (reservation));
+
+	if (tabResa == NULL)
+	{
+			printf("ProblŠme d'allocation en m‚moire pour les reservations");
+			exit(-1);
+	}
+
+	tabResa = lectureEmpResa(tabResa, nbResa, flot);
+	*idResa = tabResa[*nbResa-1].idEmpResa;
+	return tabResa;
+}
+
+
+nodeType 	*copyList(nodeType *head) // renvoie une liste copi‚e a partir de celle pass‚e en paramŠtre
+{ 
+	nodeType *newNode;
+
+    if (head == NULL) 
+        return NULL; 
+    else 
+	{
+		newNode = (nodeType*) malloc(sizeof(nodeType)); 
+        newNode->game = head->game;
+        newNode->next = copyList(head->next);
+        return newNode; 
+    } 
+} 
+
+int			comptNbEmp(emprunt tabEmp[], int idJeu, int nbEmp) // compte le nombre d'emprunts en cours d'un jeu donn‚ en paramŠtre
 {
 	int i, nbEmpJeu = 0;
 
-	for (i=0; i < nbEmp; i++)
+	for (i = 0; i < nbEmp; i++)
 	{
 		if (tabEmp[i].idJeu == idJeu)
 			nbEmpJeu++;
@@ -151,26 +250,67 @@ int			comptNbEmp(emprunt tabEmp[], int idJeu, int nbEmp) // compte le nombre d'e
 
 void		printJeu(nodeType* head, emprunt tabEmp[], int nbEmp) // affiche une liste de jeux
 {
-	nodeType*	currentNode = head;
-	jeu			currentGame;
-	int			nbEmpCurrent;
+	nodeType* currentNode = head;
+	jeu	currentGame;
+	int k = 0;
 
+	system(CLEAN_SCREEN);
 	printf("\nID JEU |            NOM            |      TYPE      | NB EXEMPL\n");
 
     while (currentNode != NULL) 
 	{
 		currentGame = currentNode->game;
-		nbEmpCurrent = comptNbEmp(tabEmp, currentGame.idJeu, nbEmp);
-		currentGame.nbExp -= nbEmpCurrent;
+		currentGame.nbExp -= comptNbEmp(tabEmp, currentGame.idJeu, nbEmp);
 		if (currentGame.nbExp > 0)
-			printf("%-6d | %-25.25s | %-14.14s | %d\n", currentGame.idJeu, currentGame.nom, currentGame.type, currentGame.nbExp);
+		{
+			printf("%-6d | %-25s | %-14s | %d\n", currentGame.idJeu, currentGame.nom, currentGame.type, currentGame.nbExp);
+			k++;
+		}
 		currentNode = currentNode->next;
     }
-
-	printf("\n"); // ordre alphabetique et par type
+	if (k == 0)
+		printf("\ntous les jeux sont actuellement emprunt‚s.\n");	
 }
 
-void    	triAlphaJeu(nodeType *head, emprunt tabEmp[], int nbEmp) // affiche les jeux disponibles dans l'ordre alphabÃ©tique (FONCTION NÂ°1.1 du menu)
+void		freeListe(nodeType *head) // libŠre la liste chain‚
+{
+	nodeType *currentNode = head;
+	jeu	currentGame;
+	int	nbEmpCurrent;
+	
+	while (currentNode != NULL) 
+	{
+		currentGame = currentNode->game;
+		free(currentNode);
+		currentNode = currentNode->next;
+    }
+}
+
+void    	triTypeJeu(nodeType *head, emprunt tabEmp[], int nbEmp) // affiche les jeux disponibles tri‚s par type (FONCTION Nø1.2 du menu)
+{
+    nodeType  	*current;
+    jeu    		temp_jeu;
+
+    current = head;
+
+    while (current != 0 && current->next != 0)
+    {
+        if (strcmp(current->game.type, current->next->game.type) > 0)
+        {
+            temp_jeu = current->game;
+            current->game = current->next->game;
+            current->next->game = temp_jeu;
+            current = head;
+        }
+
+        else
+            current = current->next;
+    }
+
+	printJeu(head, tabEmp, nbEmp);
+}
+
+void    	triAlphaJeu(nodeType *head, emprunt tabEmp[], int nbEmp) // affiche les jeux disponibles dans l'ordre alphab‚tique (FONCTION Nø1.1 du menu)
 {
     nodeType  	*current;
 	nodeType	*headbis;
@@ -178,8 +318,11 @@ void    	triAlphaJeu(nodeType *head, emprunt tabEmp[], int nbEmp) // affiche les
 
 	headbis = copyList(head);
  
-    if (headbis == 0)
+    if (headbis == NULL)
+	{
+		printf("\nProblŠme de copie de la liste de jeux\n");
 		exit(-4);
+	}
     current = headbis;
 
     while (current != 0 && current->next != 0)
@@ -196,67 +339,40 @@ void    	triAlphaJeu(nodeType *head, emprunt tabEmp[], int nbEmp) // affiche les
             current = current->next;
     }
 
-	printJeu(headbis, tabEmp, nbEmp);
+	triTypeJeu(headbis,tabEmp,nbEmp);
 
 	freeListe(headbis);
 }
 
-void    	triTypeJeu(nodeType *head, emprunt tabEmp[], int nbEmp) // affiche les jeux disponibles triÃ©s par type (FONCTION NÂ°1.2 du menu)
+void		printAllJeu(nodeType* head, emprunt tabEmp[], int nbEmp) // affiche une liste de jeux
 {
-    nodeType  	*current;
-	nodeType	*headbis;
-    jeu    		temp_jeu;
+	nodeType*	currentNode = head;
+	jeu			currentGame;
 
-	headbis = copyList(head);
- 
-    if (headbis == 0)
-        exit(-4);
-		
-    current = headbis;
-	
-    while (current != 0 && current->next != 0)
-    {
-        if (strcmp(current->game.type, current->next->game.type) > 0)
-        {
-            temp_jeu = current->game;
-            current->game = current->next->game;
-            current->next->game = temp_jeu;
-            current = headbis;
-        }
+	system(CLEAN_SCREEN);
+	printf("\nID JEU |            NOM            |      TYPE      | NB EXEMPL\n");
 
-        else
-            current = current->next;
+    while (currentNode != NULL) 
+	{
+		currentGame = currentNode->game;
+		currentGame.nbExp -= comptNbEmp(tabEmp, currentGame.idJeu, nbEmp);
+		printf("%-6d | %-25s | %-14s | %d", currentGame.idJeu, currentGame.nom, currentGame.type, currentGame.nbExp);
+		if(currentGame.nbExp < 1)
+			printf("\tCe jeu n'est plus disponible\n");
+		else
+			printf("\n");
+		currentNode = currentNode->next;
     }
-
-	printJeu(headbis, tabEmp, nbEmp);
-
-	freeListe(headbis);
 }
 
-nodeType 	*copyList(nodeType *head) // renvoie une liste copiÃ©e a partir de celle passÃ©e en paramÃ¨tre
-{ 
-	nodeType *newNode;
-
-    if (head == NULL) 
-        return NULL; 
-
-    else 
-	{
-		newNode = (nodeType*)malloc(sizeof(nodeType)); 
-        newNode->game = head->game;
-        newNode->next = copyList(head->next);
-        return newNode; 
-    } 
-} 
-
-int			menuJeu(void) // menu affichage jeu (FONCTION NÂ° 1)
+int			menuJeu(void) // menu affichage choix jeu
 {
 	int choix;
 
-    printf("\n");
-	printf("-----------------------------------------------------------------\n");
-	printf("| 1.	Afficher les jeux tries par nom				|\n");
-	printf("| 2.	Afficher les jeux tries par type			|\n");
+	system(CLEAN_SCREEN);
+	printf("\n-----------------------------------------------------------------\n");
+	printf("| 1.	Afficher les jeux disponibles				|\n");
+	printf("| 2.	Afficher tous les jeux 					|\n");
 	printf("| 3.	QUITTER							|\n");
 	printf("-----------------------------------------------------------------\n");
     scanf("%d",&choix);
@@ -265,170 +381,60 @@ int			menuJeu(void) // menu affichage jeu (FONCTION NÂ° 1)
 }
 
 
-int 		ChargementAdherents(adherent *tabAdh[], int max)  //charge le contenu du fichier adherent en mÃ©moire 
+int 		dateEmp(emprunt tabEmp[], char date[], int i) // v‚rifie la date d'emprunt
 {
-	FILE *flot;
-	int i = 0, val;
+	int ji, jn, mi, mn, ai, an;
 	
-	flot = fopen("adherents.bin","rb");
+	sscanf(date, "%d/%d/%d", &jn,&mn,&an);
+	sscanf(tabEmp[i].dateEmpResa, "%d/%d/%d", &ji, &mi, &ai);
 
-	if (flot == NULL)
+	if (ai < an)
 	{
-			printf("pb d'ouverture du fichier adherents\n");
-			exit(1);
+		if (mn > 1 || mi < 12)
+			return -1;
+		else if (ji < jn)
+			return -1;
 	}
-
-	fread(&val,sizeof(int),1,flot);
-
-	if (val > max)
-	{
-		printf("Tableaux d'adherent trop petit");
-		exit(-2);
-	}
-	
-	tabAdh[i] = (adherent *) malloc (sizeof(adherent));
-	if (tabAdh[i] == NULL)
-		{
-			printf("Probleme d'allocation en mÃ©moire Ã  la %de place pour les adherents",i);
-			exit(-1);
-		}
-	fread(tabAdh[i],sizeof(adherent),1,flot);
-
-	while (!feof(flot))
-	{
-		i++;
-		tabAdh[i] = (adherent *) malloc (sizeof(adherent));
-		if (tabAdh[i] == NULL)
-		{
-			printf("Probleme d'allocation en mÃ©moire Ã  la %de place pour les adherents",i);
-			exit(-1);
-		}
-		
-		fread(tabAdh[i],sizeof(adherent),1,flot);
-	}
-	
-	fclose(flot);
-
-	return i;
-}
-
-
-empResa		*lectureEmpResa (empResa tabEmpResa[], int *nbEmpResa, FILE *flot)
-{
-	fread(tabEmpResa,sizeof(emprunt),*nbEmpResa,flot);
-	fclose (flot);
-
-	return tabEmpResa;
-}
-
-emprunt		*ChargementEmprunt(int *nbEmp) // charge le contenu du fichier emprunt en mÃ©moire
-{
-	emprunt *tab;
-	int i;
-	FILE *flot;
-
-	flot = fopen("emprunt.bin","rb");
-	if (flot == NULL)
+	else if (mi < mn)
 	{	
-		printf("Probleme d'ouverture du fichier emprunt.bin en lecture");
-		exit(1);
+			if (ji < jn)
+				return -1;
+			else if (mi-mn <-1)
+				return -1;
 	}
-	
-	fread(nbEmp,sizeof(int),1,flot);
-	tab = (emprunt *) malloc (*nbEmp * sizeof (emprunt));
-
-	if (tab == NULL)
-	{
-			printf ("Probleme d'allocation en mÃ©moire pour les emprunts");
-			exit(-1);
-	}
-
-	return lectureEmpResa (tab, nbEmp, flot);
 }
 
-reservation *ChargementReservation(int *nbResa) // charge le contenu du fichier reservation en mÃ©moire
+void 		printEmprunt(emprunt tabEmp[], char date[], int max) // affiche tout les emprunt en cours (FONCTION Nø 2)
 {
-	reservation *tab;
-	int i;
-	FILE *flot;
-	
-	flot = fopen("reservation.bin","rb");
+	int i, exp;
 
-	if (flot == NULL)
-	{	
-		printf("Probleme d'ouverture du fichier reservation.bin en lecture");
-		exit(1);
-	}
+	system(CLEAN_SCREEN);
+	printf("ID EMPRUNT | ID ADHERENT | ID JEU | DATE EMPRUNT\n");
 
-	fread(nbResa,sizeof(int),1,flot);
-	tab = (reservation *) malloc (*nbResa * sizeof (reservation));
-
-	if (tab == NULL)
+	for (i = 0; i<max; i++, exp = 0)
 	{
-			printf ("Probleme d'allocation en mÃ©moire pour les reservations");
-			exit(-1);
-	}
-
-	return lectureEmpResa (tab, nbResa, flot);
-}
-
-
-void 		printEmprunt(emprunt *tab, date date, int max) // affiche tout les emprunt en cours (FONCTION NÂ° 2)
-{
-	int i;
-	int j, jn, m, mn, a, an;
-
-	jn = atoi(date.jours);
-	mn = atoi(date.mois);
-	an = atoi(date.annee);
-
-	printf ("\nID EMPRUNT | ID ADHERENT | ID JEU | DATE EMPRUNT\n");
-
-	for (i = 0; i<max; i++)
-	{
-		printf ("%-10d | %-11d | %-6d | %s/%s/%s", tab[i].idEmpResa, tab[i].idAdherent, tab[i].idJeu, tab[i].dateEmpResa.jours, tab[i].dateEmpResa.mois, tab[i].dateEmpResa.annee);
-
-		j = atoi(tab[i].dateEmpResa.jours);
-		m = atoi(tab[i].dateEmpResa.mois);
-		a = atoi(tab[i].dateEmpResa.annee);
-
-		if (a < an)
-		{
-			if (mn > 1 || m < 12)
-				printf("\tRetard du retour de l'emprunt");
-			else
-				if (j < jn)
-					printf("\tRetard du retour de l'emprunt");
-		}
-		else
-			if (m < mn)
-			{	
-				if (j < jn)
-					printf("\tRetard du retour de l'emprunt");
-				else
-					if (m-mn <-1)
-						printf("\tRetard du retour de l'emprunt");
-			}
+		printf("%-10d | %-11d | %-6d | %s", tabEmp[i].idEmpResa, tabEmp[i].idAdherent, tabEmp[i].idJeu, tabEmp[i].dateEmpResa);
+		if (dateEmp(tabEmp, date, i) == -1)
+			printf("\tRetard de l'emprunt");
 		printf("\n");
 	}
-
-	printf("\n");
 }
 
-void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux) // affiche toute les reservation en cours en focntion du jeux donnÃ© (FONCTION NÂ° 3)  /!\ mathys, modifie cette fonction pour l'affichage des resa
+void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux) // affiche toute les reservation en cours en focntion du jeux donn‚ (FONCTION Nø 3)
 {
-	int i, idJeu, trouve = -1, k = 0;
+	int i, idJeu, trouve, k = 0;
 	char nomJeu[25];
 
-	printf("Quelle(s) reservation(s) voulez-vous afficher ? ");
-	scanf("%s%*c",nomJeu);
+	system(CLEAN_SCREEN);
+	printf("Quelle(s) res‚rvation(s) voulez-vous afficher ? ");
+	scanf("%s%*c", nomJeu);
 	upperLower(nomJeu);
 
-	idJeu = rechercheJeu(head, nomJeu, &trouve, nbJeux);
+	idJeu = rechercheJeu(head, nomJeu, nbJeux, &trouve);
 
 	if (trouve == -1)
 	{
-		printf("Le jeu recherche n'existe pas\n");
+		printf("Le jeu recherch‚ n'existe pas, retour au menu ...\n");
 		return;
 	}
 
@@ -439,25 +445,55 @@ void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux) /
 			{
 				k++;
 				if (k == 1)
-					printf ("\nID RESERVATION | ID ADHERENT | ID JEU | DATE EMPRUNT\n");
-				printf ("%-14d | %-11d | %-6d | %s/%s/%s \n", tabResa[i].idEmpResa, tabResa[i].idAdherent, tabResa[i].idJeu, tabResa[i].dateEmpResa.jours, tabResa[i].dateEmpResa.mois, tabResa[i].dateEmpResa.annee);
+					printf("\nID RESERVATION | ID ADHERENT | ID JEU | DATE EMPRUNT\n");
+				printf("%-14d | %-11d | %-6d | %s\n", tabResa[i].idEmpResa, tabResa[i].idAdherent, tabResa[i].idJeu, tabResa[i].dateEmpResa);
 			}
 
-		printf("\n");
-
 		if (k == 0)
-			printf("Aucune reservation pour ce jeu, retour au menu...\n");
+			printf("\nAucune r‚servation pour ce jeu, retour au menu ...\n");
 	}
 }
 
 
-void 		nouvelAdherent(adherent *tabAdh[], date date, int *nbAdh, int max) // crÃ©e un nouvel adherent
+nodeType	*saisieNouveauJeu(nodeType *head, int *nbJeux) // cr‚e un nouveau jeu
+{
+	jeu game;
+	char nom[25];
+	
+	system(CLEAN_SCREEN);
+	printf("Entrez un nom, un type, un nb d'exemplaire : ");	
+	
+	scanf("%s%s%d", game.nom, game.type, &game.nbExp);
+	game.idJeu = *nbJeux+1;
+	upperLower(game.nom);
+	upperLower(game.type);
+
+	createLastNode(&head, game);
+	*nbJeux+= 1;
+	printf("\nJeu bien ajout‚.\n");
+	
+	return head;
+}
+
+
+int			rechercheAdherent(adherent *tabAdh[], char nom[], int nbAdh) // permet de savoir si l'adh‚rent existe ou non
+{
+	int i;
+	for (i = 0; i < nbAdh; i++)
+	{
+		if (strcmp(nom,tabAdh[i]->nom) == 0)
+			return i;
+	}
+	return -1;
+}
+
+void 		nouvelAdherent(adherent *tabAdh[], char date[], int *nbAdh, int max) // cr‚e un nouvel adherent
 {
 	char civ[4], nom[15], prenom[15];
 
 	if (*nbAdh == max)
 	{
-		printf("Tableau d'adherent pleins, impossible d'en ajouter un nouveau.");
+		printf("\nTableau d'adh‚rents pleins, impossible d'en ajouter un nouveau\n");
 		exit(-2);
 	}
 
@@ -465,39 +501,79 @@ void 		nouvelAdherent(adherent *tabAdh[], date date, int *nbAdh, int max) // crÃ
 
 	if (tabAdh[*nbAdh] == NULL)
 	{
-		printf("Probleme d'allocation memoire pour un nouvel adherent\n");
+		printf("\nProblŠme d'allocation m‚moire pour un nouvel adherent\n");
 		exit(-1);
 	}
 
 	tabAdh[*nbAdh]->idAdherent = *nbAdh+1;
-	printf ("Civilite, NOM, Prenom : ");
-	scanf ("%s%s%s%*c", civ, nom, prenom);
+	printf("\nCivilit‚, NOM, Prenom : ");
+	scanf("%s%s%s%*c", civ, nom, prenom);
 
-	upperLower (civ);
+	upperLower(civ);
 
 	if (strcmp(civ, "Mr") != 0 && strcmp (civ, "Mme") != 0)
 		while (strcmp(civ, "Mr") != 0 && strcmp (civ, "Mme") != 0)
 		{
-			printf ("Cette civilite n'existe pas, veuillez choisir entre Mr ou Mme : ");
-			scanf ("%s%*c",civ);
-			upperLower (civ);
+			printf("\nCette civilit‚ n'existe pas, veuillez choisir entre Mr ou Mme : ");
+			scanf("%s%*c",civ);
+			upperLower(civ);
 		}
 
-	upper (nom);
-	upperLower (prenom);
+	upper(nom);
+	upperLower(prenom);
 
-	strcpy (tabAdh[*nbAdh]->civilite, civ);
-	strcpy (tabAdh[*nbAdh]->nom, nom);
-	strcpy (tabAdh[*nbAdh]->prenom, prenom);
-	strcpy (tabAdh[*nbAdh]->dateIns.jours, date.jours);
-	strcpy (tabAdh[*nbAdh]->dateIns.mois, date.mois);
-	strcpy (tabAdh[*nbAdh]->dateIns.annee, date.annee);
+	strcpy(tabAdh[*nbAdh]->civilite, civ);
+	strcpy(tabAdh[*nbAdh]->nom, nom);
+	strcpy(tabAdh[*nbAdh]->prenom, prenom);
+	strcpy(tabAdh[*nbAdh]->dateIns, date);
 
-	printf ("Nouvel adherent ajoute avec succes\n");
-	*nbAdh+=1;
+	printf("\nNouvel adherent ajout‚ avec succes\n");
+
+	*nbAdh+= 1;
 }
 
-int			rechercheJeu(nodeType* head, char name[25], int *trouve, int nbJeux) // permet de savoir si un jeu existe ou non
+int 		dateIns(adherent *tabAdh[], char date[], int i) // v‚rifie la validit‚ de l'adherent
+{
+	int ji, jn, mi, mn, ai, an;
+	sscanf(date, "%d/%d/%d", &jn, &mn, &an);
+	sscanf(tabAdh[i]->dateIns, "%d/%d/%d", &ji, &mi, &ai);
+	
+	if (ai-an == -1)
+	{
+		if (mi <= mn)
+		{	
+			if (mi-mn < -1)
+				return -1;
+			else if (ji < jn)
+				return -1;
+		}
+	}
+	else if (ai < an)
+		return -1;		
+}
+
+int			comptNbEmpAdh(emprunt tabEmp[], int idAdh, int nbEmp) // compte le nombre d'emprunts en cours d'un jeu donn‚ en paramŠtre
+{
+	int i, nbEmpAdh;
+
+	for (nbEmpAdh = 0, i = 0; i < nbEmp; i++)
+	{
+		if (tabEmp[i].idAdherent == idAdh)
+			nbEmpAdh++;
+	}
+	
+	return nbEmpAdh;
+}
+
+int         RetardEmp(emprunt tabEmp[], char date[], int nbEmp, int idAdh)
+{
+	int i;
+	for (i = 0; i < nbEmp; i++)
+		if (tabEmp[idAdh].idAdherent == idAdh+1 && dateEmp(tabEmp, date, i) == -1) 
+			return -1;
+}
+
+int			rechercheJeu(nodeType* head, char name[25], int nbJeux, int *trouve) // permet de savoir si un jeu existe ou non
 {
 	int i = 0;
 	nodeType*	currentNode = head;
@@ -509,240 +585,260 @@ int			rechercheJeu(nodeType* head, char name[25], int *trouve, int nbJeux) // pe
 		if (strcmp(currentGame.nom, name) == 0)
 		{
 			*trouve = currentGame.nbExp;
-			break;		
+			return currentGame.idJeu;	
 		}
 		currentNode = currentNode->next;
 		i++;
     }
 
-	return currentGame.idJeu;
+	*trouve = -1;
+	return -1;
 }
 
-int			comptNbEmpAdh(emprunt tabEmp[], int idAdh, int nbEmp) // compte le nombre d'emprunts en cours d'un jeu donnÃ© en paramÃ¨tre
+int			rechercheJeuxAct(empResa tabEmpResa[], int idJeu, int idAdh, int nbEmp) // recherche si un adherent … d‚j… un emprunt ou r‚servation du jeu
 {
-	int i, nbEmpAdh = 0;
-
-	for (i=0; i<nbEmp; i++)
-	{
-		if (tabEmp[i].idAdherent == idAdh)
-			nbEmpAdh++;
-	}
-	
-	return nbEmpAdh;
-}
-
-int 		dateIns (adherent *tabAdh[], date date, int i, int *exp) // vÃ©rifie la validitÃ© de l'adherent
-{
-	int ji, jn, mi, mn, ai, an;
-	
-	ji = atoi(tabAdh[i]->dateIns.jours);
-	jn = atoi(date.jours);
-	mi = atoi(tabAdh[i]->dateIns.mois);
-	//mn = atoi(date.mois);
-	mn = 3;
-	ai = atoi(tabAdh[i]->dateIns.annee);
-	an = atoi(date.annee);
-	
-	if (ai < an || ai-an < -1)
-		if (mi < mn || mi == mn)
-		{	
-			if (ji < jn)
-				*exp = -1;
-			else
-			{
-				if (mi-mn <-1)
-					*exp = -1;
-			}
-		}
-	else
-		*exp = -1;
-}
-
-int			rechercheJeuxAct (empResa tabEmpResa[], int idJeu, int idAdh, int nbEmp)
-{
-	int i, act;
+	int i;
 
 	for (i = 0; i < nbEmp; i++)
 		if (tabEmpResa[i].idJeu == idJeu && tabEmpResa[i].idAdherent == idAdh)
-			return act = 1;
+			return 1;
 
-	return act;
+	return 0;
 }
 
-empResa		*ajoutEmpResa(empResa tabEmpResa[], adherent *tabAdh[], nodeType* head, char name[25], int nbJeux, int *nb, int *nbMax, date date, int i, int idJeu) // ajoute un/e emprunt/reservation en fonction de ce qui lui est passÃ© en paramÃ¨tre
+empResa		*ajoutEmpResa(empResa tabEmpResa[], adherent *tabAdh[], int *nb,  int *id, int *nbMax, char date[], int i, int idJeu) // ajoute un/e emprunt/reservation en fonction de ce qui lui est pass‚ en paramŠtre
 {
 	empResa *newtab;
 
 	if (*nb == *nbMax)
 	{
-		*nbMax+=5;
-		newtab = (empResa *) realloc (tabEmpResa, *nbMax * sizeof (empResa));
+		*nbMax+= 5;
+		newtab = (empResa *) realloc(tabEmpResa, *nbMax * sizeof (empResa));
 		if (newtab == NULL)
 		{
-			printf("Probleme de reallocation\n");
-			return tabEmpResa;
+			printf("\nProblŠme de r‚allocation\n");
+			exit(-3);
 		}
 		tabEmpResa = newtab;
 	}
 
-	tabEmpResa[*nb].idEmpResa = *nb+1;
+	tabEmpResa[*nb].idEmpResa = *id+1;
 	tabEmpResa[*nb].idAdherent = tabAdh[i]->idAdherent;
 	tabEmpResa[*nb].idJeu = idJeu;
-	strcpy(tabEmpResa[*nb].dateEmpResa.jours, date.jours);
-	strcpy(tabEmpResa[*nb].dateEmpResa.mois, date.mois);	
-	strcpy(tabEmpResa[*nb].dateEmpResa.annee, date.annee);
+	strcpy(tabEmpResa[*nb].dateEmpResa, date);
 
-	*nb+=1;
-	printf ("nouvel ajout effectue\n");
+	*id+= 1;
+	*nb+= 1;
+	printf("\nnouvel ajout effectu‚\n");
 
 	return tabEmpResa;
 }
 
-emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* head, date date, int *nbAdh, int *nbEmp, int *nbEmpmax, int nbJeux, int max) // saisie les informations pour un nouvel emprunt (FONCTION NÂ° 2)
+emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* head, char date[], int *nbAdh, int *nbEmp, int *idEmp, int *nbEmpmax, int nbJeux, int max) // saisie les informations pour un nouvel emprunt (FONCTION Nø 2)
 {
 	char nom[15], jeu[25], choix[4];
-	int i = 0, nbEmpAdh, exp = 0, idJeu, trouve = -1, act = 0;
+	int idAdh, idJeu, trouve;
 
-	printf ("Entrez le nom de l'emprunteur : ");
-	scanf ("%s%*c",nom);
-	upper (nom);
+	system(CLEAN_SCREEN);
+	printf("Entrez le nom de l'emprunteur : ");
+	scanf("%s%*c", nom);
+	upper(nom);
 
-	while (strcmp(nom,tabAdh[i]->nom) != 0 && i<*nbAdh)
-		i++;
+	idAdh = rechercheAdherent(tabAdh, nom, *nbAdh);
 		
-	if (strcmp(nom,tabAdh[i]->nom) != 0)
+	if (idAdh == -1)
 	{
-		printf ("cette personne n'a jamais ete enregistree, voulez vous l'ajoter ? oui/non : \n");
+		printf("cette personne n'a jamais ‚t‚ enregistr‚e, voulez vous l'ajouter ? (oui/non) : ");
 		scanf("%s%*c", choix);
 		if (strcmp(choix, "oui") == 0)
-			nouvelAdherent(tabAdh, date,nbAdh, max);
+		{
+			printf("Cette personne a-t-elle pay‚ sa cotisation ? (oui/non) : ");
+			scanf("%s%*c", choix);
+			if (strcmp(choix, "oui") == 0)
+				nouvelAdherent(tabAdh, date, nbAdh, max);
+			else
+				return tabEmp;
+		}
 		else
 			return tabEmp;
 	}
-
 	else
-	{
-		nbEmpAdh = comptNbEmpAdh(tabEmp, i+1, *nbEmp);
-		if (nbEmpAdh == 3)
+	{		
+		if (dateIns(tabAdh, date, idAdh) == -1)
 		{
-			printf ("L'adherent %s %s a deja 3 emprunts.\n", tabAdh[i]->nom, tabAdh[i]->prenom);
-			return tabEmp;
+			printf("\nL'adh‚rent %s %s est arriv‚ … expiration, a-t-il pay‚ sa cotisation ? (oui/non) : ",  tabAdh[idAdh]->nom, tabAdh[idAdh]->prenom);
+			scanf("%s", choix);
+			if (strcmp(choix, "oui") == 0)	
+				strcpy(tabAdh[idAdh]->dateIns, date); 
+			else
+				return tabEmp;
 		}
-
 		else
-		{
-			dateIns (tabAdh, date, i, &exp);
-			if (exp == -1)
+		{	
+			if (comptNbEmpAdh(tabEmp, idAdh+1, *nbEmp) == 3)
 			{
-				printf("L'adherent %s %s n'as pas payer sa cotisation annuelle.\n",  tabAdh[i]->nom, tabAdh[i]->prenom);
+				printf("\nL'adh‚rent %s %s a d‚j… 3 emprunts, retour au menu ...\n", tabAdh[idAdh]->nom, tabAdh[idAdh]->prenom);
 				return tabEmp;
 			}
-		}
-		
+			else if (RetardEmp(tabEmp, date, *nbEmp, idAdh+1) == -1)
+				
+			{
+				printf("\nL'adh‚rent %s %s a un emprunt de plus de 1 mois, retour au menu ...\n",tabAdh[idAdh]->nom, tabAdh[idAdh]->prenom);
+				return tabEmp;
+			}
+		}	
 	}
 
-	printf ("Entrez le nom du jeu emprunte : ");
-	scanf ("%s%*c", jeu);
-	upperLower (jeu);
+	Jeu :
+	printf("\nEntrez le nom du jeu  … emprunter : ");
+	scanf("%s%*c", jeu);
+	upperLower(jeu);
 
-	idJeu = rechercheJeu(head, jeu, &trouve, nbJeux);
+	idJeu = rechercheJeu(head, jeu, nbJeux, &trouve);
 
 	if (trouve == -1)
 	{
-		printf("Ce jeu n'existe pas.\n");
-		return tabEmp;
+		printf("\nCe jeu n'existe pas, voulez vous en choisir un autre ? (oui/non) : ");
+		scanf("%s", choix);
+			if (strcmp(choix, "oui") == 0)	
+				goto Jeu;
+			else
+				return tabEmp;
 	}
-
 	else
 	{	
-		act = rechercheJeuxAct (tabEmp, idJeu, i+1, *nbEmp);
-		if (act == 1)
+		if (rechercheJeuxAct(tabEmp, idJeu, idAdh+1, *nbEmp) == 1)
 		{
-			printf("Cet adherent a deja emprunte ce jeu.\n");
-			return tabEmp;
+			printf("Cet adherent … d‚j… emprunt‚ ce jeu, voulez vous en choisir un autre ? (oui/non) : ");
+			scanf("%s", choix);
+			if (strcmp(choix, "oui") == 0)	
+				goto Jeu;
+			else
+				return tabEmp;
 		}
 		else
 		{
-			trouve -= comptNbEmp(tabEmp, idJeu, *nbEmp);
-			if (trouve == 0)
+			if (trouve-comptNbEmp(tabEmp, idJeu, *nbEmp) == 0)
 			{
-				printf("Ce jeu n'est plus disponible, veuillez en faire une reservation.\n");
-				return tabEmp;
+				printf("Ce jeu n'est plus disponible, veuillez en faire une r‚servation, voulez vous en choisir un autre ? (oui/non) : ");
+				scanf("%s", choix);
+				if (strcmp(choix, "oui") == 0)	
+					goto Jeu;
+				else
+					return tabEmp;
 			}
 			else
-				return ajoutEmpResa(tabEmp, tabAdh, head, jeu, nbJeux, nbEmp, nbEmpmax, date, i, idJeu);
+				return ajoutEmpResa(tabEmp, tabAdh, nbEmp, idEmp,nbEmpmax, date, idAdh, idJeu);
 		}
 	}
 }
 
-reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt tabEmp[], nodeType* head, date date, int *nbAdh, int *nbResa, int *nbResaMax, int nbEmp, int nbJeux, int max) // saisie les informations pour une nouvelle reservation (FONCTION NÂ° 3)
+reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt tabEmp[], nodeType* head, char date[], int *nbAdh, int *nbResa,  int *idResa, int *nbResaMax, int nbEmp, int nbJeux, int max) // saisie les informations pour une nouvelle reservation (FONCTION Nø 3)
 {
 	char nom[15], jeu[25], choix[4];
-	int i = 0, exp, idJeu, trouve = -1, act = 0;
+	int idAdh, idJeu, trouve;
 
-	printf ("Entrez le nom de l'adherent souhaitant reserver : ");
-	scanf ("%s%*c",nom);
-	upper (nom);
+	system(CLEAN_SCREEN);
+	printf("Entrez le nom de l'adh‚rent souhaitant r‚server : ");
+	scanf("%s%*c",nom);
+	upper(nom);
 
-	while (strcmp(nom,tabAdh[i]->nom) != 0 && i<*nbAdh)
-		i++;
+	idAdh = rechercheAdherent(tabAdh, nom, *nbAdh);
 		
-	if (strcmp(nom,tabAdh[i]->nom) != 0)
+	if (idAdh == -1)
 	{
-		printf ("cette personne n'a jamais ete enregistree, voulez vous l'ajoter ? oui/non : \n");
+		printf("cette personne n'a jamais ‚t‚ enregistr‚e, voulez vous l'ajouter ? (oui/non) : \n");
 		scanf("%s%*c", choix);
 		if (strcmp(choix, "oui") == 0)
-			nouvelAdherent(tabAdh, date,nbAdh, max);
+		{	
+			printf("Cette personne a-t-elle pay‚ sa cotisation ? (oui/non) : ");
+			scanf("%s%*c", choix);
+			if (strcmp(choix, "oui") == 0)
+				nouvelAdherent(tabAdh, date, nbAdh, max);
+			else
+				return tabResa;
+		}
 		else
 			return tabResa;
 	}
 	else
 	{
-		dateIns (tabAdh, date, i, &exp);
-		if (exp == -1)
+		if (dateIns(tabAdh, date, idAdh) == -1)
 		{
-				printf("L'adherent %s %s n'as pas payer sa cotisation annuelle.\n",  tabAdh[i]->nom, tabAdh[i]->prenom);
+			printf("L'adherent %s %s est arriv‚ … expiration, a-t-il pay‚ sa cotisation ? (oui/non) : \n\n",  tabAdh[idAdh]->nom, tabAdh[idAdh]->prenom);
+			scanf("%s", choix);
+			if (strcmp(choix, "oui") == 0)
+			{	
+				strcpy(tabAdh[idAdh]->dateIns, date);
+			}
+			else
 				return tabEmp;
+		}
+		else if (RetardEmp(tabEmp, date, nbEmp, idAdh+1) == -1)		
+		{
+			printf("\nL'adh‚rent %s %s a un emprunt de plus de 1 mois, retour au menu ...\n",tabAdh[idAdh]->nom, tabAdh[idAdh]->prenom);
+			return tabResa;
 		}
 	}
 	
-	printf ("Entrez le nom du jeu reserve: ");
+	Jeu :
+	printf("Entrez le nom du jeu … reserver : ");
 	scanf ("%s%*c", jeu);
 	upperLower (jeu);
 
-	idJeu = rechercheJeu(head, jeu, &trouve, nbJeux);
+	idJeu = rechercheJeu(head, jeu, nbJeux, &trouve);
 
 	if (trouve == -1)
 	{
-		printf("Ce jeu n'existe pas.\n");
-		return tabResa;
+		printf("Ce jeu n'existe pas, voulez vous en choisir un autre ? (oui/non) : ");
+		scanf("%s", choix);
+			if (strcmp(choix, "oui") == 0)	
+				goto Jeu;
+			else
+				return tabEmp;
 	}
-
 	else
 	{	
-		act = rechercheJeuxAct (tabResa, idJeu, i+1, *nbResa);
-		if (act == 1)
+		if (rechercheJeuxAct(tabResa, idJeu, idAdh+1, *nbResa) == 1)
 		{
-			printf("Cet adherent a deja reserve ce jeu.\n");
-			return tabEmp;
+			printf("Cet adherent a d‚j… r‚serv‚ ce jeu, voulez vous en choisir un autre ? (oui/non) : ");
+			scanf("%s", choix);
+			if (strcmp(choix, "oui") == 0)	
+				goto Jeu;
+			else
+				return tabEmp;
 		}
 		else
 		{
-			trouve -= comptNbEmp(tabEmp, idJeu, nbEmp);
-			if (trouve > 0)
+			if (trouve-comptNbEmp(tabEmp, idJeu, nbEmp) > 0)
 			{
 				printf("Ce jeu est disponible, veuillez en faire un emprunt.\n");
 				return tabResa;
 			}
 			else
-				return ajoutEmpResa(tabResa, tabAdh, head, jeu, nbJeux, nbResa, nbResaMax, date, i, idJeu);
+				return ajoutEmpResa(tabResa, tabAdh, nbResa, idResa,nbResaMax, date, idAdh, idJeu);
 		}
 	}
 }
 
 
+int			printEmpResa(empResa tabEmpResa[], int nbEmpResa, int id) // affiche les emprunt ou r‚servations d'un adherent.
+{
+	int j, k;
 
-empResa 	*decalerGauche(empResa tabEmpResa[], int *nbEmpResa, int val) // dÃ©caler un tableau Ã  gauche
+	for (k = 0, j = 0; j < nbEmpResa; j++)
+		if (tabEmpResa[j].idAdherent == id)
+		{
+			k++;
+			if (k ==1)
+				printf("\nID EMPRESA | ID ADHERENT | ID JEU | DATE EMPRUNT\n");
+			printf("%-10d | %-11d | %-6d | %s\n", tabEmpResa[j].idEmpResa, tabEmpResa[j].idAdherent, tabEmpResa[j].idJeu, tabEmpResa[j].dateEmpResa);	
+		}	
+	printf("\n");
+	return k;
+}
+
+empResa 	*decalerGauche(empResa tabEmpResa[], int *nbEmpResa, int val) // d‚caler un tableau … gauche
 {
 	while (val < *nbEmpResa-1)
 	{
@@ -755,140 +851,133 @@ empResa 	*decalerGauche(empResa tabEmpResa[], int *nbEmpResa, int val) // dÃ©cal
 	return tabEmpResa;
 }
 
-emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int *nbEmp, int *nbResa, int nbAdh, date date) // retourne un jeu et regarde si une reservation peu passer en emprunt (FONCTION NÂ°6)
+int			rechercheResa(reservation tabResa[], int nbResa, int idjeu) // recherche si une r‚servation corespond au nom du jeu
 {
-	int i = 0, j, k = 0, val, exp = 0;
-	int jeu;
+	int i;
+	for (i = 0; i < nbResa ; i++)
+		if (tabResa[i].idJeu == idjeu)
+			return i;
+	return -1;
+}
+
+emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int *nbEmp, int *idEmp, int *nbResa, int nbAdh, char date[]) // retourne un jeu et regarde si une reservation peu passer en emprunt (FONCTION Nø6)
+{
+	int idAdh, idResa, val, exp = 0;
+	int idjeu;
 	char nom[15];
 
-	printf("Entrez le nom de l'emprunteur qui rend un jeu: ");
+	system(CLEAN_SCREEN);
+	printf("Entrez le nom de l'emprunteur : ");
 	scanf("%s", nom);
 	upper(nom);
 
-	while (strcmp(nom,tabAdh[i]->nom) != 0 && i < nbAdh)
-		i++;
+	idAdh = rechercheAdherent(tabAdh, nom, nbAdh);
 
-	if (strcmp(nom,tabAdh[i]->nom) != 0)
+	if (idAdh == -1)
 	{
-		printf ("cette personne n'a jamais ete enregistree.\n");
+		printf("\ncette personne n'a jamais ‚t‚ enregistr‚e, retour au menu ...\n");
 		return tabEmp;
 	}
-
-	for (j = 0; j < *nbEmp; j++)
+	else 
 	{
-		if (tabEmp[j].idAdherent == i+1)
+		if (printEmpResa(tabEmp, *nbEmp, idAdh+1) == 0)
 		{
-			k++;
-			if (k ==1)
-				printf ("\nID RESERVATION | ID ADHERENT | ID JEU | DATE EMPRUNT\n");
-			printf ("%-14d | %-11d | %-6d | %s/%s/%s\n", tabEmp[j].idEmpResa, tabEmp[j].idAdherent, tabEmp[j].idJeu, tabEmp[j].dateEmpResa.jours, tabEmp[j].dateEmpResa.mois, tabEmp[j].dateEmpResa.annee);	
-		}	
-	}
-
-	if (k == 0)
-	{
-		printf("Aucun emprunt en cours pour cet adherent\n");
-		return tabEmp;
-	}
-
-	printf("\nChoissisez un numero d'emprunt pour cet adherent : ");
-	scanf("%d", &val);
-
-	if (tabEmp[val-1].idAdherent != i+1)	
-		while (tabEmp[val-1].idAdherent != i+1)
+			printf("Aucun emprunt en cours pour cet adh‚rent\n");
+			return tabEmp;
+		}
+		else
 		{
-			printf("Votre numero d'emprunt pour cet adherent n'est pas correct veuillez resaisir : ");
+			printf("Choissisez un num‚ro d'emprunt pour cet adh‚rent : ");
 			scanf("%d", &val);
-		}
 
-	jeu = tabEmp[val-1].idJeu;
-	tabEmp = decalerGauche(tabEmp, nbEmp, val-1);
-	printf("Retour bien effectue\n");
-	
-	for (j = 0; j < *nbResa ; j++)
-		if (tabResa[j].idJeu == jeu)
-		{	
-			dateIns (tabAdh, date, i, &exp);
-			if (comptNbEmpAdh(tabEmp, tabResa[j].idAdherent, *nbEmp) < 3 && exp == 0)
-			{
-				tabEmp[*nbEmp].idEmpResa = *nbEmp+2;
-				tabEmp[*nbEmp].idAdherent = tabResa[j].idAdherent;
-				tabEmp[*nbEmp].idJeu = tabResa[j].idJeu;
-				strcpy(tabEmp[*nbEmp].dateEmpResa.jours, date.jours);
-				strcpy(tabEmp[*nbEmp].dateEmpResa.mois, date.mois);	
-				strcpy(tabEmp[*nbEmp].dateEmpResa.annee, date.annee);
-				*nbEmp+=1;
-				printf("La reservation numero %d au nom de %s %s est passee en emprunt\n", tabResa[j].idEmpResa, tabAdh[(tabResa[j].idAdherent)-1]->nom, tabAdh[(tabResa[j].idAdherent)-1]->prenom);
-				tabResa = decalerGauche(tabResa, nbResa, j);
-				
-				break;
+			if (tabEmp[val-1].idAdherent != idAdh+1)	
+				while (tabEmp[val-1].idAdherent != idAdh+1)
+				{
+					printf("Votre numero d'emprunt pour cet adherent n'est pas correct veuillez resaisir : ");
+					scanf("%d", &val);
+				}
+
+			idjeu = tabEmp[val-1].idJeu;
+			tabEmp = decalerGauche(tabEmp, nbEmp, val-1);
+			printf("\nRetour bien effectu‚\n");
+			
+			idResa = rechercheResa(tabResa, *nbResa, idjeu);
+			if ( idResa != -1)
+			{	
+				if (comptNbEmpAdh(tabEmp, tabResa[idResa].idAdherent, *nbEmp) < 3 && dateIns(tabAdh, date, idAdh) != -1  && RetardEmp(tabEmp, date, *nbEmp, idAdh+1) != -1)
+				{
+					tabEmp[*nbEmp].idEmpResa = *idEmp+1;
+					tabEmp[*nbEmp].idAdherent = tabResa[idResa].idAdherent;
+					tabEmp[*nbEmp].idJeu = tabResa[idResa].idJeu;
+					strcpy(tabEmp[*nbEmp].dateEmpResa, date);
+
+					*idEmp+= 1;
+					*nbEmp+= 1;
+					printf("\nLa r‚servation num‚ro %d au nom de %s %s est pass‚e en emprunt\n", tabResa[idResa].idEmpResa, tabAdh[(tabResa[idResa].idAdherent)-1]->nom, tabAdh[(tabResa[idResa].idAdherent)-1]->prenom);
+					tabResa = decalerGauche(tabResa, nbResa, idResa);
+				}
 			}
-		}
-
+		}		
+	}
 	return tabEmp;	
 }
 
-reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbResa, int nbAdh) // Annule une reservation (FONCTION NÂ°7)
+reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbResa, int nbAdh) // Annule une reservation (FONCTION Nø7)
 {
-	int i = 0, j, k = 0, val, test = 0;
+	int idAdh, j, k = 0, val, test = 0;
 	char nom[15];
 	
-	printf("Entrez le nom de l'emprunteur qui annule une reservation: ");
+	system(CLEAN_SCREEN);
+	printf("Entrez le nom de l'emprunteur qui souhaite annuler une r‚servation : ");
 	scanf("%s", nom);
 	upper(nom);
 
-	while (strcmp(nom, tabAdh[i]->nom) != 0 && i < nbAdh)
-		i++;
+	idAdh = rechercheAdherent(tabAdh, nom, nbAdh);
 
-	if (strcmp(nom,tabAdh[i]->nom) != 0)
+	if (idAdh == -1)
 	{
-		printf ("cette personne n'a jamais ete enregistree.\n");
+		printf("\ncette personne n'a jamais ‚t‚ enregistr‚e, retour au menu ...\n");
 		return tabResa;
 	}
-
-	for (j = 0; j < *nbResa; j++)
+	else
 	{
-		if (tabResa[j].idAdherent == i+1)
-		{
-			printf ("%-10d | %-11d | %-6d | %s/%s/%s\n", tabResa[j].idEmpResa, tabResa[j].idAdherent, tabResa[j].idJeu, tabResa[j].dateEmpResa.jours, tabResa[j].dateEmpResa.mois, tabResa[j].dateEmpResa.annee);
-			k++;	
+		if (printEmpResa(tabResa, *nbResa, idAdh+1) == 0)
+			{
+				printf("Aucun emprunt en cours pour cet adh‚rent\n");
+				return tabResa;
+			}
+		else
+		{		
+			printf("Choissisez un numero de r‚servation pour cet adherent : ");
+			scanf("%d", &val);
+
+			if (tabResa[val-1].idAdherent != idAdh+1)	
+				while (tabResa[val-1].idAdherent != idAdh+1)
+				{
+					printf("Votre num‚ro de r‚servation n'est pas correct pour cet adherent veuillez resaisir : ");
+					scanf("%d", &val);
+				}
+
+			tabResa = decalerGauche(tabResa, nbResa, val-1);
+			printf("Annulation bien effectu‚e\n");
+
+			return tabResa;
 		}	
 	}
-
-	if (k == 0)
-	{
-		printf("Aucune reservation en cours pour cet adherent\n");
-		return tabResa;
-	}
-
-	printf("Choissisez un numero de reservation pour cet adherent : ");
-	scanf("%d", &val);
-
-	if (tabResa[val-1].idAdherent != i+1)	
-		while (tabResa[val-1].idAdherent != i+1)
-		{
-			printf("Votre numero de reservation n'est pas correct pour cet adherent veuillez resaisir : ");
-			scanf("%d", &val);
-		}
-
-	tabResa = decalerGauche(tabResa, nbResa, val-1);
-	printf("Annulation bien effectuee\n");
-
-	return tabResa;	
 }	
 
 
 void 		saveJeux(nodeType *head, int nbJeux) //sauvegarde la liste de jeux dans son fichier binaire
 {
-	nodeType*	currentNode = head;
-	jeu			currentGame;
+	nodeType* currentNode = head;
+	jeu	currentGame;
 	FILE *flot;
 
 	flot = fopen ("jeux.bin","wb");
 	
 	if (flot == NULL)
 	{
-		printf("Probleme d'ouverture du fichier jeux.bin en Ã©criture");
+		printf("ProblŠme d'ouverture du fichier jeux.bin en ‚criture");
 		return;
 	}
 
@@ -902,7 +991,7 @@ void 		saveJeux(nodeType *head, int nbJeux) //sauvegarde la liste de jeux dans s
     }
 
 	fclose(flot);
-	printf("Sauvegarde des jeux terminee\n");
+	printf("Sauvegarde des jeux termin‚e\n");
 }
 
 void 		saveAdh(adherent **tabAdh, int nbAdh) // sauvegarde le tableau de pointeur d'adherents dans son fichier binaire
@@ -914,7 +1003,7 @@ void 		saveAdh(adherent **tabAdh, int nbAdh) // sauvegarde le tableau de pointeu
 
 	if (flot == NULL)
 	{
-		printf("Probleme d'ouverture du fichier adherents.bin en Ã©criture");
+		printf("ProblŠme d'ouverture du fichier adherents.bin en ‚criture");
 		return;
 	}
 
@@ -924,7 +1013,7 @@ void 		saveAdh(adherent **tabAdh, int nbAdh) // sauvegarde le tableau de pointeu
 		fwrite(tabAdh[i], sizeof(adherent), 1, flot);
 
 	fclose(flot);
-	printf("Sauvegarde des adherents terminee\n");
+	printf("Sauvegarde des adh‚rents termin‚e\n");
 }
 
 void 		saveEmp(emprunt *tabEmp, int nbEmp) // sauvegarde le tableau d'emprunt dans son fichier binaire
@@ -935,7 +1024,7 @@ void 		saveEmp(emprunt *tabEmp, int nbEmp) // sauvegarde le tableau d'emprunt da
 
 	if (flot == NULL)
 	{
-		printf("Probleme d'ouverture du fichier emprunt.bin en Ã©criture");
+		printf("ProblŠme d'ouverture du fichier emprunt.bin en ‚criture");
 		return;
 	}
 
@@ -943,7 +1032,7 @@ void 		saveEmp(emprunt *tabEmp, int nbEmp) // sauvegarde le tableau d'emprunt da
 	fwrite(tabEmp, sizeof(emprunt), nbEmp, flot);
 	fclose(flot);
 
-	printf("Sauvegarde des emprunts terminee\n");
+	printf("Sauvegarde des emprunts termin‚e\n");
 }
 
 void 		saveResa(reservation *tabResa, int nbResa) // sauvegarde le tableau de reservation dans son fichier binaire
@@ -954,7 +1043,7 @@ void 		saveResa(reservation *tabResa, int nbResa) // sauvegarde le tableau de re
 
 	if (flot == NULL)
 	{
-		printf("Probleme d'ouverture du fichier reservation.bin en Ã©criture");
+		printf("ProblŠme d'ouverture du fichier reservation.bin en ‚criture");
 		return;
 	}
 
@@ -962,11 +1051,12 @@ void 		saveResa(reservation *tabResa, int nbResa) // sauvegarde le tableau de re
 	fwrite(tabResa, sizeof(reservation),nbResa,flot);
 	fclose(flot);
 
-	printf("Sauvegarde des reservations terminee\n");
+	printf("Sauvegarde des r‚servations termin‚e\n");
 }
 
-void 		sauvegarder (nodeType *head, adherent **tabAdh, emprunt *tabEmp, reservation *tabResa, int nbJeux, int nbAdh, int nbEmp, int nbResa) // sauvegarde tout les tableaux  dans un fichier binaire
+void 		sauvegarder(nodeType *head, adherent **tabAdh, emprunt *tabEmp, reservation *tabResa, int nbJeux, int nbAdh, int nbEmp, int nbResa) // sauvegarde tout les tableaux  dans un fichier binaire
 {
+	system(CLEAN_SCREEN);
 	saveJeux(head, nbJeux);
 	saveAdh(tabAdh, nbAdh);
 	saveEmp(tabEmp, nbEmp);
@@ -979,11 +1069,11 @@ void 		saveJeuxTxt(nodeType *head, int nbJeux) //sauvegarde la liste de jeux dan
 	jeu			currentGame;
 	FILE *flot;
 
-	flot = fopen ("jeux.txt","w");
+	flot = fopen("jeux.txt","w");
 	
 	if (flot == NULL)
 	{
-		printf("Probleme d'ouverture du fichier jeux.txt en Ã©criture");
+		printf("ProblŠme d'ouverture du fichier jeux.txt en ‚criture");
 		return;
 	}
 
@@ -993,25 +1083,24 @@ void 		saveJeuxTxt(nodeType *head, int nbJeux) //sauvegarde la liste de jeux dan
 	while (currentNode != NULL) 
 	{
 		currentGame = currentNode->game;
-		fprintf(flot, "%-6d | %-25.25s | %-13.13s | %d\n", currentGame.idJeu, currentGame.nom, currentGame.type, currentGame.nbExp);
+		fprintf(flot, "%-6d | %-25s | %-13s | %d\n", currentGame.idJeu, currentGame.nom, currentGame.type, currentGame.nbExp);
 		currentNode = currentNode->next;
     }
 
 	fclose(flot);
-	printf("Sauvegarde des jeux en texte terminee\n");
+	printf("Sauvegarde des jeux en texte termin‚e\n");
 }
-
 
 void 		saveAdhTxt(adherent **tabAdh, int nbAdh) //sauvegarde le tableau de pointeur d'adherents dans son fichier texte
 {
 	FILE *flot;
 	int i;
 
-	flot = fopen ("adherents.txt","w");
+	flot = fopen("adherents.txt","w");
 
 	if (flot == NULL)
 	{
-		printf("Probleme d'ouverture du fichier adherents.txt en Ã©criture");
+		printf("ProblŠme d'ouverture du fichier adherents.txt en ‚criture");
 		return;
 	}
 
@@ -1019,10 +1108,10 @@ void 		saveAdhTxt(adherent **tabAdh, int nbAdh) //sauvegarde le tableau de point
 	fprintf(flot, "\nID ADHERENT | CIVILITE |       NOM       |      PRENOM     |   DATE\n");
 
 	for (i = 0; i < nbAdh; i++)
-		fprintf(flot,"%-11d | %-8.8s | %-15.15s | %-15.15s | %s/%s/%s\n", tabAdh[i]->idAdherent, tabAdh[i]->civilite, tabAdh[i]->nom, tabAdh[i]->prenom, tabAdh[i]->dateIns.jours, tabAdh[i]->dateIns.mois, tabAdh[i]->dateIns.annee);
+		fprintf(flot,"%-11d | %-8s | %-15s | %-15s | %s\n", tabAdh[i]->idAdherent, tabAdh[i]->civilite, tabAdh[i]->nom, tabAdh[i]->prenom, tabAdh[i]->dateIns);
 
 	fclose(flot);
-	printf("Sauvegarde des adhenrents en texte terminee\n");
+	printf("Sauvegarde des adh‚rents en texte termin‚e\n");
 }
 
 void 		saveEmpTxt(emprunt *tabEmp, int nbEmp) //sauvegarde le tableau d'emprunt dans son fichier texte
@@ -1034,7 +1123,7 @@ void 		saveEmpTxt(emprunt *tabEmp, int nbEmp) //sauvegarde le tableau d'emprunt 
 
 	if (flot == NULL)
 	{
-		printf("Probleme d'ouverture du fichier emprunt.txt en Ã©criture");
+		printf("ProblŠme d'ouverture du fichier emprunt.txt en ‚criture");
 		return;
 	}
 
@@ -1042,10 +1131,10 @@ void 		saveEmpTxt(emprunt *tabEmp, int nbEmp) //sauvegarde le tableau d'emprunt 
 	fprintf(flot, "\nID EMPRUNT | ID ADHERENT | ID JEU |   DATE\n");
 
 	for ( i = 0; i < nbEmp; i++)
-		fprintf(flot, "%-10d | %-11d | %-6d | %s/%s/%s\n", tabEmp[i].idEmpResa, tabEmp[i].idAdherent, tabEmp[i].idJeu, tabEmp[i].dateEmpResa.jours, tabEmp[i].dateEmpResa.mois, tabEmp[i].dateEmpResa.annee);
+		fprintf(flot, "%-10d | %-11d | %-6d | %s\n", tabEmp[i].idEmpResa, tabEmp[i].idAdherent, tabEmp[i].idJeu, tabEmp[i].dateEmpResa);
 
 	fclose(flot);
-	printf("Sauvegarde des emprunts en texte terminee\n");
+	printf("Sauvegarde des emprunts en texte termin‚e\n");
 }
 
 void 		saveResaTxt(reservation *tabResa, int nbResa) //sauvegarde le tableau de reservation dans son fichier texte
@@ -1057,7 +1146,7 @@ void 		saveResaTxt(reservation *tabResa, int nbResa) //sauvegarde le tableau de 
 	
 	if (flot == NULL)
 	{
-		printf("Probleme d'ouverture du fichier emprunt.txt en Ã©criture");
+		printf("ProblŠme d'ouverture du fichier emprunt.txt en ‚criture");
 		return;
 	}
 
@@ -1065,13 +1154,13 @@ void 		saveResaTxt(reservation *tabResa, int nbResa) //sauvegarde le tableau de 
 	fprintf(flot, "\nID RESERVATION | ID ADHERENT | ID JEU |   DATE\n");
 
 	for ( i = 0; i < nbResa; i++)
-		fprintf(flot, "%-14d | %-11d | %-6d | %s/%s/%s\n", tabResa[i].idEmpResa, tabResa[i].idAdherent, tabResa[i].idJeu, tabResa[i].dateEmpResa.jours, tabResa[i].dateEmpResa.mois, tabResa[i].dateEmpResa.annee);
+		fprintf(flot, "%-14d | %-11d | %-6d | %s\n", tabResa[i].idEmpResa, tabResa[i].idAdherent, tabResa[i].idJeu, tabResa[i].dateEmpResa);
 
 	fclose(flot);
-	printf("Sauvegarde des reservation en texte terminee\n");
+	printf("Sauvegarde des r‚servation en texte termin‚e\n");
 }
 
-void 		sauvegarderTxt (nodeType *head, adherent **tabAdh, emprunt *tabEmp, reservation *tabResa, int nbJeux, int nbAdh, int nbEmp, int nbResa) // sauvegarde totu les tableaux en binaire et txt
+void 		sauvegarderTxt(nodeType *head, adherent **tabAdh, emprunt *tabEmp, reservation *tabResa, int nbJeux, int nbAdh, int nbEmp, int nbResa) // sauvegarde totu les tableaux en binaire et txt
 {
 	sauvegarder (head, tabAdh, tabEmp, tabResa, nbJeux, nbAdh, nbEmp, nbResa);
 	saveJeuxTxt(head, nbJeux);
@@ -1080,15 +1169,14 @@ void 		sauvegarderTxt (nodeType *head, adherent **tabAdh, emprunt *tabEmp, reser
 	saveResaTxt(tabResa, nbResa);
 }
 
-
-int			menuSave(void) // menu affichage save (FONCTION NÂ° 8)
+int			menuSave(void) // menu affichage save (FONCTION Nø 8)
 {
 	int choix;
 
-    printf("\n");
-	printf("-----------------------------------------------------------------\n");
-	printf("| 1.	Sauvegarder en fichier binaire				|\n");
-	printf("| 2.	Sauvegarde en fichier binaire et texte			|\n");
+	system(CLEAN_SCREEN);
+	printf("\n-----------------------------------------------------------------\n");
+	printf("| 1.	Sauvegarder en fichier binaire.				|\n");
+	printf("| 2.	Sauvegarder en fichier binaire et texte.		|\n");
 	printf("| 3.	QUITTER							|\n");
 	printf("-----------------------------------------------------------------\n");
     scanf("%d",&choix);

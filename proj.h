@@ -1,10 +1,16 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<time.h>
-#include<ctype.h>
+#include<time.h> //bibliotäque pour la lecture de la date systäme
+#include<ctype.h> // bibliotqäue pour le upper et lower char
 
-typedef struct  // cr√©e la strcuture pour le fichier jeux
+#if defined WIN32
+#define CLEAN_SCREEN "cls"
+#elif defined __linux
+#define CLEAN_SCREEN "clear"
+#endif
+
+typedef struct  // crÇe la strcuture pour le fichier jeux
 {
     int idJeu;
     char nom[25];
@@ -12,92 +18,90 @@ typedef struct  // cr√©e la strcuture pour le fichier jeux
     int nbExp;
 } jeu;
 
-typedef struct
-{
-    char jours[3];
-    char mois[3];
-    char annee[5];
-} date;
-
-
-typedef struct  // cr√©e la structure pour le fichier adherents
+typedef struct  // crÇe la structure pour le fichier adherents
 {
     int idAdherent;
     char civilite[4];
     char nom[15];
     char prenom[15];
-    date dateIns;
+    char dateIns[11];
 } adherent;
 
-typedef struct  // cr√©e la structure pour le fichier adherents et reservation
+typedef struct  // crÇe la structure pour le fichier adherents et reservation
 {
     int idEmpResa;
     int idAdherent;
     int idJeu;
-    date dateEmpResa;
+    char dateEmpResa[11];
 } emprunt, reservation, empResa;
 
-typedef struct node
+typedef struct node //crÇe la structure pour la liste chainÇ
 {
     jeu game;
     struct node *next;
 } nodeType;
-//maillon de liste chain√©e
+
 
 // prototype menu
 int         menu(void);
 
-// prototypes date du jour
-date 		dateNow(date date);
+// prototype date du jour
+void        dateNow(char date[]);
 
 // prototypes upper et lower 
-void 		upper (char tab[]);
-void 		upperLower (char tab[]);
+void 		upper(char tab[]);
+void 		upperLower(char tab[]);
 
-// prototypes  chargement jeux
+// prototypes chargement jeux
 nodeType   	*createNode(jeu game);
 nodeType   	*lastNode(nodeType *head);
 void       	createLastNode(nodeType **head, jeu game);
 nodeType   	*ChargementJeux(nodeType* head, int *nbJeux);
-void		freeListe(nodeType *head);
+
+
+// prototypes chargement adherents
+int        	ChargementAdherents(adherent *tab[], int max);
+
+// prototypes chargement emprunts/reservation
+empResa		*lectureEmpResa(empResa tabEmpResa[], int *nbEmpResa, FILE *flot);
+emprunt    	*ChargementEmprunt (int *nbEmp, int *idEmp);
+reservation	*ChargementReservation (int *nbResa, int *idResa);
 
 // prototype affichage jeux
+nodeType 	*copyList(nodeType *head);
 int			comptNbEmp(emprunt tabEmp[], int idJeu, int nbEmp); 
 void		printJeu(nodeType* head, emprunt tabEmp[], int nbEmp);
-nodeType 	*copyList(nodeType *head);
-void       	triAlphaJeu(nodeType *head, emprunt tabEmp[], int nbEmp);
+void		freeListe(nodeType *head);
 void       	triTypeJeu(nodeType *head, emprunt tabEmp[], int nbEmp);
+void       	triAlphaJeu(nodeType *head, emprunt tabEmp[], int nbEmp);
+void        printAllJeu(nodeType* head, emprunt tabEmp[], int nbEmp);
 int		   	menuJeu(void);
 
-// prototypes  chargement adherents
-int        	ChargementAdherents (adherent *tab[], int max);
-
-// prototypes  chargement emprunts/reservation
-empResa		*lectureEmpResa (empResa tabEmpResa[], int *nbEmpResa, FILE *flot);
-emprunt    	*ChargementEmprunt (int *nbEmp);
-reservation	*ChargementReservation (int *nbResa);
-
 // prototype affichage emprunts/reservations
-void        printEmprunt (emprunt tab[], date date, int max);
+int 		dateEmp(emprunt tabEmp[], char date[], int i);
+void        printEmprunt (emprunt tabEmp[], char date[], int max);
 void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux);
 
+// prototype pour nouveau jeu
+nodeType	*saisieNouveauJeu(nodeType *head, int *nbJeux);
+
 // prototypes pour nouvel emprunt/reservation
-void 		nouvelAdherent(adherent *tabAdh[], date date,int *nbAdh, int max);
-int			rechercheJeu(nodeType* head, char name[25], int *trouve, int nbJeux);
+void 		nouvelAdherent(adherent *tabAdh[], char date[],int *nbAdh, int max);
+int 		dateIns(adherent *tabAdh[], char date[], int i);
 int			comptNbEmpAdh(emprunt tabEmp[], int idAdh, int nbEmp);
-int 		dateIns (adherent *tabAdh[], date date, int i, int *exp);
-int			rechercheJeuxAct (emprunt tabEmp[], int idJeu, int idAdh, int nbEmp);
-empResa 	*ajoutEmpResa(empResa tabEmpresa[], adherent *tabAdh[], nodeType* head, char name[25], int nbJeux, int *nb, int *nbMax, date date, int i, int idJeu);
-emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[],nodeType* head, date date, int *nbAdh, int *nbEmp, int *nbEmpmax, int nbJeu, int max);
-reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt tabEmp[], nodeType* head, date date, int *nbAdh, int *nbResa, int *nbResaMax, int nbEmp, int nbJeux, int max);
+int         RetardEmp(emprunt tabEmp[], char date[], int nbEmp, int idAdh);
+int			rechercheJeu(nodeType* head, char name[25], int nbJeux, int *trouve);
+int			rechercheJeuxAct(emprunt tabEmp[], int idJeu, int idAdh, int nbEmp);
+empResa		*ajoutEmpResa(empResa tabEmpResa[], adherent *tabAdh[], int *nb, int *id, int *nbMax, char date[], int i, int idJeu);
+emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[],nodeType* head, char date[], int *nbAdh, int *nbEmp, int *idEmp, int *nbEmpmax, int nbJeu, int max);
+reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt tabEmp[], nodeType* head, char date[], int *nbAdh, int *nbResa, int *idResa,int *nbResaMax, int nbEmp, int nbJeux, int max);
 
 // prototype retour jeu/annulation reservation
+int		printEmpResa(empResa tabEmpResa[], int nbEmpResa, int id);
 empResa 	*decalerGauche(empResa tabEmpResa[], int *nbEmpResa, int val);
-emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int *nbEmp, int *nbResa, int nbAdh, date date);
+emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int *nbEmp, int *idEmp, int *nbResa, int nbAdh, char date[]);
+int			rechercheResa(reservation tabResa[], int nbResa, int idjeu);
 reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbResa, int nbAdh);
-
-// free pour la liste
-void		freeListe(nodeType *head);
 
 // prototypes sauvegarde
 void        saveJeux(nodeType *head, int nbJeux);
