@@ -1,0 +1,7 @@
+Nombre d'emprunt en cours : 4
+
+ID RESERVATION | ID ADHERENT | ID JEU |   DATE
+1              | 2           | 3      | 15/01/2021
+2              | 2           | 11     | 16/01/2021
+3              | 5           | 5      | 14/01/2021
+4              | 3           | 10     | 20/01/2021

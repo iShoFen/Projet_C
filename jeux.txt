@@ -1,0 +1,15 @@
+Nombre total de jeux : 12
+
+ID JEU |            NOM            |      TYPE     | NOMBRE D'EXEMPLAIRE
+1      | Cyberpunk                 | video         | 5
+2      | Kapla                     | plateau       | 2
+3      | Monopoly                  | plateau       | 3
+4      | Scrabble                  | plateau       | 5
+5      | Echecs                    | logique       | 2
+6      | Dames                     | logique       | 4
+7      | Petits-chevaux            | plateau       | 3
+8      | RDR2                      | video         | 5
+9      | Legos                     | construction  | 4
+10     | Poker                     | cartes        | 3
+11     | Uno                       | cartes        | 5
+12     | Cartes                    | cartes        | 4
