@@ -1,12 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<time.h> //bibliot�que pour la lecture de la date syst�me
-#include<ctype.h> // bibliotq�ue pour le upper et lower char
+#include<time.h> //bibliothèque pour la lecture de la date système
+#include<ctype.h> // bibliothèque pour le upper et lower char
 
 #if defined WIN32
 #define CLEAN_SCREEN "cls"
 #elif defined(unix) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__))
+#define CLEAN_SCREEN "clear"
+#elif defined MAC
 #define CLEAN_SCREEN "clear"
 #endif
 
@@ -27,7 +29,7 @@ typedef struct  // cr�e la structure pour le fichier adherents
     char dateIns[11];
 } adherent;
 
-typedef struct  // cr�e la structure pour le fichier adherents et reservation
+typedef struct  // crée la structure pour le fichier adherents et reservation
 {
     int idEmpResa;
     int idAdherent;
@@ -35,7 +37,7 @@ typedef struct  // cr�e la structure pour le fichier adherents et reservation
     char dateEmpResa[11];
 } emprunt, reservation, empResa;
 
-typedef struct node //cr�e la structure pour la liste chain�
+typedef struct node //crée la structure pour la liste chainé
 {
     jeu game;
     struct node *next;
