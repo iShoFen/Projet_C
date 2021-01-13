@@ -99,7 +99,7 @@ emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[],nodeType* hea
 reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt tabEmp[], nodeType* head, char date[], int *nbAdh, int *nbResa, int *idResa,int *nbResaMax, int nbEmp, int nbJeux, int max);
 
 // prototype retour jeu/annulation reservation
-int		printEmpResa(empResa tabEmpResa[], int nbEmpResa, int id);
+int			printEmpResa(empResa tabEmpResa[], int nbEmpResa, int id);
 empResa 	*decalerGauche(empResa tabEmpResa[], int *nbEmpResa, int val);
 emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int *nbEmp, int *idEmp, int *nbResa, int nbAdh, char date[]);
 int			rechercheResa(reservation tabResa[], int nbResa, int idjeu);
