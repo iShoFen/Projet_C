@@ -1335,13 +1335,13 @@ void 		sauvegarderTxt(nodeType *head, adherent **tabAdh, emprunt *tabEmp, reserv
 	char choix[4];
 
 	printf("Voulez-vous changez de répertoire pour les sauvegardes (File/Fichier txt) ? (oui/non) : ");
-	fgets(dest,100,stdin);
-	dest[strlen(dest)-1] = '\0';
+	scanf("%s%*c", choix);
 
 	if (strcmp(choix, "oui") == 0)
 	{
 		printf("Entrez le répertoire : ");
-		scanf("%s", dest);
+		fgets(dest,100,stdin);
+		dest[strlen(dest)-1] = '\0';
 	}
 
 	saveJeuxTxt(head, nbJeux, dest);
