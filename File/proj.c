@@ -352,11 +352,8 @@ nodeType    *fusionL(nodeType *G, nodeType *D, int choix)
     }
     else
     {
-        if (D != NULL)
-        {
-            head = D;
-            head->next = fusionL(NULL,D->next, -1);
-        }
+        head = D;
+        head->next = fusionL(NULL,D->next, -1);
     }
 	return head;
 }

@@ -11,12 +11,6 @@ Jeu :
 - type du jeu (char type[13]), 
 - nombre d'exemplaires (int nbExp).
 
-**A voir si je change**
-Date, composée de trois char : 
-- jour (char jours[3]), 
-- mois (char mois[3]), 
-- année (char annee[5])
-
 Adhérent : 
 - identifiant (int idAdherent), 
 - civilité (char civilite[4]), 
@@ -57,6 +51,16 @@ Cette fonction prend en paramètre une chaine de caractères et la convertit en 
 
 	void 		upperLower (char tab[]);
 Cette fonction prend en paramètre une chaine de caractères et convertit la première lettre en majuscule puis les autres lettres en minuscules.
+
+<br/>
+
+	void 		formatTxt (char tab[]);
+Cette fonction prend en paramètre une chaine de caractères et convertit chaque espace en '_'
+
+<br/>
+
+	void 		formatBin (char tab[]);
+Cette fonction prend en paramètre une chaine de caractères et convertit chaque '_' en espace.
 
 <br/>
 
@@ -135,6 +139,11 @@ Cette fonction prend en paramètre la liste chaînée déjà existante puis la c
 
 <br/>
 
+	void        copierL(nodeType *headbis, int nbJ, nodeType **GD, nodeType **S);
+
+
+<br/>
+
     int			comptNbEmp(emprunt tabEmp[], int idJeu, int nbEmp); 
 Cette fonction prend en paramètre un tableau d'emprunts, un identifiant de jeu et le nombre d'emprunts dans le tableau.
 Elle parcourt le tableau d'emprunts en regardant chaque identifiant de jeu et itère le nombre d'emprunt du jeu si il s'agit de l'identifiant passé en paramètre.
@@ -154,13 +163,13 @@ Elle fait appelle à la fonction **compteNbEmp()** pour pouvoir afficher le nomb
 
 <br/>
 
-    void       	triTypeJeu(nodeType *head, emprunt tabEmp[], int nbEmp);
+    void       	triSwitchJeu(nodeType *head,  int nbEmp);
 Cette fonction fonctionne de la même manière que **triAlphaJeu()** sauf quelle trie la liste par type . A la fin elle fait appel à **printJeu()** pour afficher la liste.
 
 <br/>
 
-    void       	triAlphaJeu(nodeType *head, emprunt tabEmp[], int nbEmp);
-Cette fonction prend en paramètre une liste chaînée de jeux, un tableau d'emprunt et le nombre d'emprunt, puis parcour la liste en comparent avec *(strcmp())* les éléments de la liste deux à deux. Si le résultat est positif, on intervertit les deux éléments comparés (par nom), puis on redémarre du début de la liste. Cette fonction fait appel à la fonction **triTypeJeu()** pour trier la liste alphabétique par type.
+    void       	triSwitch(nodeType *head, int choix);
+Cette fonction prend en paramètre une liste chaînée de jeux, un tableau d'emprunt et le nombre d'emprunt, puis parcourt la liste en comparant avec *(strcmp())* les éléments de la liste deux à deux. Si le résultat est positif, on intervertit les deux éléments comparés (par nom), puis on redémarre du début de la liste. Cette fonction fait appel à la fonction **triTypeJeu()** pour trier la liste alphabétique par type.
 
 <br/>
 
