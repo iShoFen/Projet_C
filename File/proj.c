@@ -4,7 +4,7 @@ int 		menu(void) // Menu principal
 {
 	int choix;
 
-	system("cls");
+	system(CLEAN_SCREEN);
 	printf("\n-----------------------------------------------------------------\n");
 	printf("| 1.	Afficher les jeux 					|\n");
 	printf("| 2.	Afficher la liste des adherents 			|\n");
@@ -19,7 +19,7 @@ int 		menu(void) // Menu principal
 	printf("| 11.	QUITTER							|\n");                  
 	printf("-----------------------------------------------------------------\n");
     scanf("%d",&choix);
-	system("cls");
+	system(CLEAN_SCREEN);
 
     return choix;
 }
@@ -35,14 +35,14 @@ void 		dateNow(char date[]) //récupère la date du jour en format local (france
 
 void 		upper(char tab[]) // met toutes les lettres d'une chaine de caractères en maj
 {
-	int i;
+	unsigned int i;
 	for (i = 0; i < strlen(tab); i++)	
 		tab[i] = toupper(tab[i]);
 }
 
 void 		upperLower(char tab[]) // met la première lettre en maj et le reste en min pour une chaine de caractères
 {
-	int i;
+	unsigned int i;
 	tab[0] = toupper(tab[0]);
 	for (i = 1; i < strlen(tab); i++)
 	{
@@ -58,7 +58,7 @@ void 		upperLower(char tab[]) // met la première lettre en maj et le reste en m
 
 void		formatTxt(char tab[]) // remplace le carac _ par un espace.
 {
-	int i;
+	unsigned int i;
 
 	for ( i = 0; i < strlen(tab); i++)
 		if (tab[i] == '_')
@@ -68,7 +68,7 @@ void		formatTxt(char tab[]) // remplace le carac _ par un espace.
 
 void		formatBin(char tab[]) // remplace le carac espace par _
 {
-	int i;
+	unsigned int i;
 
 	for ( i = 0; i < strlen(tab); i++)
 		if (tab[i] == ' ')
@@ -206,7 +206,6 @@ empResa		*lectureEmpResa(empResa tabEmpResa[], int nbEmpResa, FILE *flot) // lit
 emprunt		*ChargementEmprunt(int *nbEmp, int *idEmp) // charge le contenu du fichier emprunt en mémoire
 {
 	emprunt *tabEmp;
-	int i;
 	FILE *flot;
 
 	flot = fopen("File/Fichier bin/emprunts.bin", "rb");
@@ -238,7 +237,6 @@ emprunt		*ChargementEmprunt(int *nbEmp, int *idEmp) // charge le contenu du fich
 reservation *ChargementReservation(int *nbResa, int *idResa) // charge le contenu du fichier reservation en m?moire
 {
 	reservation *tabResa;
-	int i;
 	FILE *flot;
 	
 	flot = fopen("File/Fichier bin/reservations.bin", "rb");
@@ -360,6 +358,7 @@ nodeType    *fusionL(nodeType *G, nodeType *D, int choix)
             head->next = fusionL(NULL,D->next, -1);
         }
     }
+	return head;
 }
 
 nodeType    *triFusionL(nodeType *headbis, int nbJ, int choix)
@@ -423,7 +422,6 @@ void		freeListe(nodeType *head) // libère la liste chaînée
 {
 	nodeType *currentNode = head;
 	jeu	currentGame;
-	int	nbEmpCurrent;
 	
 	while (currentNode != NULL) 
 	{
@@ -490,14 +488,14 @@ int			menuJeu(void) // menu affichage choix jeu
 {
 	int choix;
 
-	system("cls");
+	system(CLEAN_SCREEN);
 	printf("\n-----------------------------------------------------------------\n");
 	printf("| 1.	Afficher les jeux disponibles				|\n");
 	printf("| 2.	Afficher tous les jeux 					|\n");
 	printf("| 3.	QUITTER							|\n");
 	printf("-----------------------------------------------------------------\n");
     scanf("%d",&choix);
-	system("cls");
+	system(CLEAN_SCREEN);
 
     return choix;
 }
@@ -535,6 +533,7 @@ int 		dateEmp(emprunt tabEmp[], char date[], int i) // vérifie la date d'emprun
 			else if (mi-mn <-1)
 				return -1;
 	}
+	return 0;
 }
 
 void 		printEmprunt(emprunt tabEmp[], char date[], int nbEmp) // affiche tout les emprunt en cours (FONCTION N° 2)
@@ -557,7 +556,6 @@ void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux) /
 	int i, idJeu, trouve, k = 0;
 	char nomJeu[26];
 
-	Jeu : 
 	printf("Quelle jeu voulez-vous rechercher ? ");
 	fgets(nomJeu,26,stdin);
 	nomJeu[strlen(nomJeu)-1] = '\0';
@@ -684,7 +682,9 @@ int 		dateIns(adherent *tabAdh[], char date[], int i) // vérifie la validité d
 		}
 	}
 	else if (ai < an)
-		return -1;		
+		return -1;	
+		
+	return 0;	
 }
 
 int			comptNbEmpAdh(emprunt tabEmp[], int idAdh, int nbEmp) // compte le nombre d'emprunts en cours d'un jeu donné en paramètre
@@ -706,6 +706,7 @@ int         RetardEmp(emprunt tabEmp[], char date[], int nbEmp, int idAdh)
 	for (i = 0; i < nbEmp; i++)
 		if (tabEmp[idAdh].idAdherent == idAdh+1 && dateEmp(tabEmp, date, i) == -1) 
 			return -1;
+	return 0;
 }
 
 int			rechercheJeu(nodeType* head, char name[], int nbJeux, int *trouve) // permet de savoir si un jeu existe ou non
@@ -1072,7 +1073,7 @@ emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int
 
 reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbResa, int nbAdh) // Annule une réservation (FONCTION N°7)
 {
-	int idAdh, j, k = 0, val;
+	int idAdh, val;
 	char nom[16], prenom[16];
 	
 	printf("Entrez le NOM de la personne qui souhaite annuler une réservation : ");
@@ -1357,14 +1358,14 @@ int			menuSave(void) // menu affichage save (FONCTION N° 8)
 {
 	int choix;
 
-	system("cls");
+	system(CLEAN_SCREEN);
 	printf("\n-----------------------------------------------------------------\n");
 	printf("| 1.	Sauvegarder en File/fichier binaire.			|\n");
 	printf("| 2.	Sauvegarder en File/fichier binaire et texte.		|\n");
 	printf("| 3.	QUITTER							|\n");
 	printf("-----------------------------------------------------------------\n");
     scanf("%d",&choix);
-	system("cls");
+	system(CLEAN_SCREEN);
 
     return choix;
 }

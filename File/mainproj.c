@@ -41,7 +41,6 @@ void global(void)
                         printf("\ntapez entrée pour continuer ...");
                         c = getchar();
                         choix = menuJeu();
-                        system("cls");
                     } break;
             case 2 : printAdherent(tabAdh, nbAdh) ; break; // affiche tous les adherents
             case 3 : printEmprunt(tabEmp, date, nbEmp) ; break; // affiche tous les emprunts en cours
