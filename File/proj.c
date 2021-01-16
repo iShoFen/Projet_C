@@ -84,7 +84,7 @@ nodeType	*createNode(jeu	game) // crée un maillon de liste chaînée
 
 	if (node == NULL)
 	{
-		printf("Problème d'allocation pour la liste chaînée\n");
+		printf("Problème d'allocation pour la liste chaînée.\n");
 		exit(-1);
 	}
 
@@ -129,7 +129,7 @@ nodeType	*ChargementJeux(nodeType *head, int *nbJeux) // utilise les trois fonct
 
 	if (flot == NULL)
 	{
-		printf("problème d'ouverture du fichier jeux.bin en lecture\n");
+		printf("Problème d'ouverture du fichier jeux.bin en lecture.\n");
 		exit(1);
 	}
 
@@ -160,7 +160,7 @@ int 		ChargementAdherents(adherent *tabAdh[], int max)  //charge le contenu du f
 
 	if (flot == NULL)
 	{
-			printf("problème d'ouverture du fichier adherents.bin en lecture\n");
+			printf("Problème d'ouverture du fichier adherents.bin en lecture.\n");
 			exit(1);
 	}
 
@@ -169,7 +169,7 @@ int 		ChargementAdherents(adherent *tabAdh[], int max)  //charge le contenu du f
 
 	if (nbAdh > max)
 	{
-		printf("Tableaux d'adhérents trop petit");
+		printf("Tableaux d'adhérents trop petit.");
 		exit(-2);
 	}
 	while (!feof(flot))
@@ -177,7 +177,7 @@ int 		ChargementAdherents(adherent *tabAdh[], int max)  //charge le contenu du f
 		tabAdh[i] = (adherent *) malloc(sizeof(adherent));
 		if (tabAdh[i] == NULL)
 		{
-			printf("Problème d'allocation en mémoire à la %de place pour les adhérents",i+1);
+			printf("Problème d'allocation en mémoire à la %de place pour les adhérents.",i+1);
 			exit(-1);
 		}
 		fread(tabAdh[i],sizeof(adherent),1,flot);
@@ -213,7 +213,7 @@ emprunt		*ChargementEmprunt(int *nbEmp, int *idEmp) // charge le contenu du fich
 
 	if (flot == NULL)
 	{	
-		printf("Problème d'ouverture du fichier emprunt.bin en lecture");
+		printf("Problème d'ouverture du fichier emprunt.bin en lecture.");
 		exit(1);
 	}
 
@@ -225,7 +225,7 @@ emprunt		*ChargementEmprunt(int *nbEmp, int *idEmp) // charge le contenu du fich
 
 	if (tabEmp == NULL)
 	{
-			printf("Problème d'allocation en mémoire pour les emprunts");
+			printf("Problème d'allocation en mémoire pour les emprunts.");
 			exit(-1);
 	}
 
@@ -244,7 +244,7 @@ reservation *ChargementReservation(int *nbResa, int *idResa) // charge le conten
 
 	if (flot == NULL)
 	{	
-		printf("Problème d'ouverture du fichier reservation.bin en lecture");
+		printf("Problème d'ouverture du fichier reservation.bin en lecture.");
 		exit(1);
 	}
 
@@ -255,7 +255,7 @@ reservation *ChargementReservation(int *nbResa, int *idResa) // charge le conten
 
 	if (tabResa == NULL)
 	{
-			printf("Problème d'allocation en mémoire pour les reservations");
+			printf("Problème d'allocation en mémoire pour les reservations.");
 			exit(-1);
 	}
 
@@ -459,7 +459,7 @@ void		printJeu(nodeType* head, emprunt tabEmp[], int nbJeux, int nbEmp) // affic
 		currentNode = currentNode->next;
     }
 	if (k == 0)
-		printf("\ntous les jeux sont actuellement empruntés.\n");	
+		printf("\nTous les jeux sont actuellement empruntés.\n");	
 
 	freeListe(headbis);
 }
@@ -477,7 +477,7 @@ void		printAllJeu(nodeType* head, emprunt tabEmp[], int nbEmp) // affiche une li
 		currentGame.nbExp -= comptNbEmp(tabEmp, currentGame.idJeu, nbEmp);
 		printf("%-6d | %-25s | %-12s | %d", currentGame.idJeu, currentGame.nom, currentGame.type, currentGame.nbExp);
 		if(currentGame.nbExp < 1)
-			printf("\tCe jeu n'est plus disponible\n");
+			printf("\tCe jeu n'est plus disponible.\n");
 		else
 			printf("\n");
 		currentNode = currentNode->next;
@@ -546,7 +546,7 @@ void 		printEmprunt(emprunt tabEmp[], char date[], int nbEmp) // affiche tout le
 	{
 		printf("%-10d | %-11d | %-6d | %s", tabEmp[i].idEmpResa, tabEmp[i].idAdherent, tabEmp[i].idJeu, tabEmp[i].dateEmpResa);
 		if (dateEmp(tabEmp, date, i) == -1)
-			printf("\tRetard de l'emprunt");
+			printf("\tRetard de l'emprunt.");
 		printf("\n");
 	}
 }
@@ -556,7 +556,7 @@ void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux) /
 	int i, idJeu, trouve, k = 0;
 	char nomJeu[26];
 
-	printf("Quelle jeu voulez-vous rechercher ? ");
+	printf("Quel jeu voulez-vous rechercher ? : ");
 	fgets(nomJeu,26,stdin);
 	nomJeu[strlen(nomJeu)-1] = '\0';
 	upperLower(nomJeu);
@@ -602,7 +602,7 @@ nodeType	*saisieNouveauJeu(nodeType *head, int *nbJeux) // crée un nouveau jeu
 	game.type[strlen(game.type)-1] = '\0';
 	upperLower(game.type);
 
-	printf("Un nb d'exemplaire : ");
+	printf("Un nombre d'exemplaire(s) : ");
 	scanf("%d",&game.nbExp);
 	
 
@@ -631,7 +631,7 @@ void 		nouvelAdherent(adherent *tabAdh[], char nom[], char prenom[], char date[]
 
 	if (*nbAdh == max)
 	{
-		printf("\nTableau d'adhérents pleins, impossible d'en ajouter un nouveau\n");
+		printf("\nTableau d'adhérents plein, impossible d'en ajouter un nouveau.\n");
 		exit(-2);
 	}
 
@@ -639,7 +639,7 @@ void 		nouvelAdherent(adherent *tabAdh[], char nom[], char prenom[], char date[]
 
 	if (tabAdh[*nbAdh] == NULL)
 	{
-		printf("\nProblème d'allocation mémoire pour un nouvel adherent\n");
+		printf("\nProblème d'allocation en mémoire pour un nouvel adhérent.\n");
 		exit(-1);
 	}
 
@@ -661,7 +661,7 @@ void 		nouvelAdherent(adherent *tabAdh[], char nom[], char prenom[], char date[]
 	strcpy(tabAdh[*nbAdh]->prenom, prenom);
 	strcpy(tabAdh[*nbAdh]->dateIns, date);
 
-	printf("\nNouvel adhérent ajouté\n");
+	printf("\nNouvel adhérent ajouté.\n");
 	*nbAdh+= 1;
 }
 
@@ -752,7 +752,7 @@ empResa		*ajoutEmpResa(empResa tabEmpResa[], adherent *tabAdh[], int *nbEmpResa,
 		newtab = (empResa *) realloc(tabEmpResa, *nbEmpResaMax * sizeof (empResa));
 		if (newtab == NULL)
 		{
-			printf("\nProblème de réallocation\n");
+			printf("\nProblème de réallocation.\n");
 			exit(-3);
 		}
 		tabEmpResa = newtab;
@@ -765,7 +765,7 @@ empResa		*ajoutEmpResa(empResa tabEmpResa[], adherent *tabAdh[], int *nbEmpResa,
 
 	*idEmpResa+= 1;
 	*nbEmpResa+= 1;
-	printf("\nnouvel ajout effectué\n");
+	printf("\nNouvel ajout effectué.\n");
 
 	return tabEmpResa;
 }
@@ -789,11 +789,11 @@ emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* he
 		
 	if (idAdh == -1)
 	{
-		printf("%s %s n'a jamais été enregistrée, voulez vous l'ajouter ? (oui/non) : ", nom, prenom);
+		printf("%s %s n'a jamais été enregistré(e), voulez vous l'ajouter ? (oui/non) : ", nom, prenom);
 		scanf("%s%*c", choix);
 		if (strcmp(choix, "oui") == 0)
 		{
-			printf("Cette personne a-t-elle payée sa cotisation ? (oui/non) : ");
+			printf("Cette personne a-t-elle payé sa cotisation ? (oui/non) : ");
 			scanf("%s%*c", choix);
 			if (strcmp(choix, "oui") == 0)
 				nouvelAdherent(tabAdh, nom, prenom, date, nbAdh, max);
@@ -807,7 +807,7 @@ emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* he
 	{		
 		if (dateIns(tabAdh, date, idAdh) == -1)
 		{
-			printf("\nL'adhérent %s %s est arrivé à expiration, a-t-il payée sa cotisation ? (oui/non) : ",  tabAdh[idAdh]->nom, tabAdh[idAdh]->prenom);
+			printf("\nL'adhérent %s %s est arrivé à expiration, a-t-il payé sa cotisation ? (oui/non) : ",  tabAdh[idAdh]->nom, tabAdh[idAdh]->prenom);
 			scanf("%s%*c", choix);
 			if (strcmp(choix, "oui") == 0)	
 				strcpy(tabAdh[idAdh]->dateIns, date); 
@@ -849,7 +849,7 @@ emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* he
 	{	
 		if (rechercheJeuxAct(tabEmp, idJeu, idAdh+1, *nbEmp) == 1)
 		{
-			printf("Cet adhérent à déjà emprunté ce jeu, voulez vous en choisir un autre ? (oui/non) : ");
+			printf("Cet adhérent a déjà emprunté ce jeu, voulez vous en choisir un autre ? (oui/non) : ");
 			scanf("%s%*c", choix);
 			if (strcmp(choix, "oui") == 0)	
 				goto Jeu;
@@ -892,11 +892,11 @@ reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt
 		
 	if (idAdh == -1)
 	{
-		printf("%s %s n'a jamais été enregistrée, voulez vous l'ajouter ? (oui/non) : ", nom, prenom);
+		printf("%s %s n'a jamais été enregistré(e), voulez vous l'ajouter ? (oui/non) : ", nom, prenom);
 		scanf("%s%*c", choix);
 		if (strcmp(choix, "oui") == 0)
 		{	
-			printf("Cette personne a-t-elle payée sa cotisation ? (oui/non) : ");
+			printf("Cette personne a-t-elle payé sa cotisation ? (oui/non) : ");
 			scanf("%s%*c", choix);
 			if (strcmp(choix, "oui") == 0)
 				nouvelAdherent(tabAdh, nom, prenom, date, nbAdh, max);
@@ -910,7 +910,7 @@ reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt
 	{
 		if (dateIns(tabAdh, date, idAdh) == -1)
 		{
-			printf("L'adhérent %s %s est arrivé à expiration, a-t-il payée sa cotisation ? (oui/non) : ",  tabAdh[idAdh]->nom, tabAdh[idAdh]->prenom);
+			printf("L'adhérent %s %s est arrivé à expiration, a-t-il payé sa cotisation ? (oui/non) : ",  tabAdh[idAdh]->nom, tabAdh[idAdh]->prenom);
 			scanf("%s%*c", choix);
 			if (strcmp(choix, "oui") == 0)
 			{	
@@ -947,7 +947,7 @@ reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt
 	{	
 		if (rechercheJeuxAct(tabResa, idJeu, idAdh+1, *nbResa) == 1)
 		{
-			printf("Cet adhérent à déjà réservé ce jeu, voulez vous en choisir un autre ? (oui/non) : ");
+			printf("Cet adhérent a déjà réservé ce jeu, voulez vous en choisir un autre ? (oui/non) : ");
 			scanf("%s%*c", choix);
 			if (strcmp(choix, "oui") == 0)	
 				goto Jeu;
@@ -1025,7 +1025,7 @@ emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int
 
 	if (idAdh == -1)
 	{
-		printf("%s %s n'a jamais été enregistrée, retour au menu ...\n", nom, prenom);
+		printf("%s %s n'a jamais été enregistré(e), retour au menu ...\n", nom, prenom);
 		return tabEmp;
 	}
 	else 
@@ -1048,7 +1048,7 @@ emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int
 
 			idjeu = tabEmp[val-1].idJeu;
 			tabEmp = decalerGauche(tabEmp, nbEmp, val-1);
-			printf("\nRetour bien effectué\n");
+			printf("\nRetour bien effectué.\n");
 			
 			idResa = rechercheResa(tabResa, *nbResa, idjeu);
 			if ( idResa != -1)
@@ -1062,7 +1062,7 @@ emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int
 
 					*idEmp+= 1;
 					*nbEmp+= 1;
-					printf("\nLa réservation numéro %d au nom de %s %s est passée en emprunt\n", tabResa[idResa].idEmpResa, tabAdh[(tabResa[idResa].idAdherent)-1]->nom, tabAdh[(tabResa[idResa].idAdherent)-1]->prenom);
+					printf("\nLa réservation numéro %d au nom de %s %s est passée en emprunt.\n", tabResa[idResa].idEmpResa, tabAdh[(tabResa[idResa].idAdherent)-1]->nom, tabAdh[(tabResa[idResa].idAdherent)-1]->prenom);
 					tabResa = decalerGauche(tabResa, nbResa, idResa);
 				}
 			}
@@ -1090,7 +1090,7 @@ reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbRe
 
 	if (idAdh == -1)
 	{
-		printf("%s %s n'a jamais été enregistrée, retour au menu ...\n", nom, prenom);
+		printf("%s %s n'a jamais été enregistré(e), retour au menu ...\n", nom, prenom);
 		return tabResa;
 	}
 	else
@@ -1107,7 +1107,7 @@ reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbRe
 
 			while (tabResa[val-1].idAdherent != idAdh+1)
 			{
-				printf("Votre numéro de réservation n'est pas correct pour cet adhérent veuillez resaisir : ");
+				printf("Votre numéro de réservation n'est pas correct pour cet adhérent veuillez ressaisir : ");
 				scanf("%d", &val);
 			}
 
@@ -1126,11 +1126,11 @@ void 		saveJeux(nodeType *head, int nbJeux) //sauvegarde la liste de jeux dans s
 	jeu	currentGame;
 	FILE *flot;
 
-	flot = fopen ("File/Fichier bin/jeux.bin","wb");
+	flot = fopen ("File/Fichier bin/jeux.bin", "wb");
 	
 	if (flot == NULL)
 	{
-		printf("Problème d'ouverture du fichier jeux.bin en écriture");
+		printf("Problème d'ouverture du fichier jeux.bin en écriture.");
 		return;
 	}
 
@@ -1152,11 +1152,11 @@ void 		saveAdh(adherent **tabAdh, int nbAdh) // sauvegarde le tableau de pointeu
 	FILE *flot;
 	int i;
 
-	flot = fopen ("File/Fichier bin/adherents.bin","wb");
+	flot = fopen ("File/Fichier bin/adherents.bin", "wb");
 
 	if (flot == NULL)
 	{
-		printf("Problème d'ouverture du fichier adherents.bin en écriture");
+		printf("Problème d'ouverture du fichier adherents.bin en écriture.");
 		return;
 	}
 	
@@ -1175,11 +1175,11 @@ void 		saveEmp(emprunt *tabEmp, int nbEmp) // sauvegarde le tableau d'emprunt da
 {
 	FILE *flot;
 
-	flot = fopen("File/Fichier bin/emprunts.bin","wb");
+	flot = fopen("File/Fichier bin/emprunts.bin", "wb");
 
 	if (flot == NULL)
 	{
-		printf("Problème d'ouverture du fichier emprunt.bin en écriture");
+		printf("Problème d'ouverture du fichier emprunt.bin en écriture.");
 		return;
 	}
 
@@ -1193,11 +1193,11 @@ void 		saveResa(reservation *tabResa, int nbResa) // sauvegarde le tableau de re
 {
 	FILE *flot;
 
-	flot = fopen("File/Fichier bin/reservations.bin","wb");
+	flot = fopen("File/Fichier bin/reservations.bin", "wb");
 
 	if (flot == NULL)
 	{
-		printf("Problème d'ouverture du fichier reservation.bin en écriture");
+		printf("Problème d'ouverture du fichier reservation.bin en écriture.");
 		return;
 	}
 
@@ -1234,7 +1234,7 @@ void 		saveJeuxTxt(nodeType *head, int nbJeux, char src[]) //sauvegarde la liste
 	
 	if (flot == NULL)
 	{
-		printf("Problème d'ouverture du fichier jeux.txt en écriture");
+		printf("Problème d'ouverture du fichier jeux.txt en écriture.");
 		return;
 	}
 
@@ -1264,7 +1264,7 @@ void 		saveAdhTxt(adherent **tabAdh, int nbAdh, char src[]) //sauvegarde le tabl
 
 	if (flot == NULL)
 	{
-		printf("Problème d'ouverture du fichier adherents.txt en écriture");
+		printf("Problème d'ouverture du fichier adherents.txt en écriture.");
 		return;
 	}
 
@@ -1290,7 +1290,7 @@ void 		saveEmpTxt(emprunt *tabEmp, int nbEmp, char src[]) //sauvegarde le tablea
 
 	if (flot == NULL)
 	{
-		printf("Problème d'ouverture du fichier emprunts.txt en écriture");
+		printf("Problème d'ouverture du fichier emprunts.txt en écriture.");
 		return;
 	}
 
@@ -1316,7 +1316,7 @@ void 		saveResaTxt(reservation *tabResa, int nbResa, char src[]) //sauvegarde le
 	
 	if (flot == NULL)
 	{
-		printf("Problème d'ouverture du fichier reservation.txt en écriture");
+		printf("Problème d'ouverture du fichier reservation.txt en écriture.");
 		return;
 	}
 
