@@ -1335,7 +1335,8 @@ void 		sauvegarderTxt(nodeType *head, adherent **tabAdh, emprunt *tabEmp, reserv
 	char choix[4];
 
 	printf("Voulez-vous changez de répertoire pour les sauvegardes (File/Fichier txt) ? (oui/non) : ");
-	scanf("%s%*c", choix);
+	fgets(dest,100,stdin);
+	dest[strlen(dest)-1] = '\0';
 
 	if (strcmp(choix, "oui") == 0)
 	{
