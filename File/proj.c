@@ -1141,6 +1141,7 @@ void 		saveJeux(nodeType *head, int nbJeux) //sauvegarde la liste de jeux dans s
 		currentGame = currentNode->game;
 		formatBin(currentGame.nom);
 		fwrite(&currentGame, sizeof(jeu), 1, flot);
+		formatTxt(currentGame.nom);
 		currentNode = currentNode->next;
     }
 
@@ -1166,6 +1167,7 @@ void 		saveAdh(adherent **tabAdh, int nbAdh) // sauvegarde le tableau de pointeu
 	{	
 		formatBin(tabAdh[i]->nom);
 		fwrite(tabAdh[i], sizeof(adherent), 1, flot);
+		formatTxt(tabAdh[i]->nom);
 	}
 
 	fclose(flot);
@@ -1344,11 +1346,11 @@ void 		sauvegarderTxt(nodeType *head, adherent **tabAdh, emprunt *tabEmp, reserv
 		dest[strlen(dest)-1] = '\0';
 	}
 
+	sauvegarder (head, tabAdh, tabEmp, tabResa, nbJeux, nbAdh, nbEmp, nbResa);
 	saveJeuxTxt(head, nbJeux, dest);
 	saveAdhTxt(tabAdh, nbAdh, dest);
 	saveEmpTxt(tabEmp, nbEmp, dest);
 	saveResaTxt(tabResa, nbResa, dest);
-	sauvegarder (head, tabAdh, tabEmp, tabResa, nbJeux, nbAdh, nbEmp, nbResa);
 	printf("\nSauvegarde des jeux en texte terminée\n");
 	printf("Sauvegarde des adhérents en texte terminée\n");
 	printf("Sauvegarde des emprunts en texte terminée\n");
