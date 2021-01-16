@@ -144,6 +144,16 @@ Cette fonction prend en paramètre la liste chaînée déjà existante puis la c
 
 <br/>
 
+	nodeType    *fusionL(nodeType *G, nodeType *D, int choix);
+
+
+<br/>
+
+	nodeType    *triFusionL(nodeType *headbis, int nbJ, int choix);
+
+
+<br/>
+
     int			comptNbEmp(emprunt tabEmp[], int idJeu, int nbEmp); 
 Cette fonction prend en paramètre un tableau d'emprunts, un identifiant de jeu et le nombre d'emprunts dans le tableau.
 Elle parcourt le tableau d'emprunts en regardant chaque identifiant de jeu et itère le nombre d'emprunt du jeu si il s'agit de l'identifiant passé en paramètre.
@@ -163,13 +173,10 @@ Elle fait appelle à la fonction **compteNbEmp()** pour pouvoir afficher le nomb
 
 <br/>
 
-    void       	triSwitchJeu(nodeType *head,  int nbEmp);
-Cette fonction fonctionne de la même manière que **triAlphaJeu()** sauf quelle trie la liste par type . A la fin elle fait appel à **printJeu()** pour afficher la liste.
-
-<br/>
-
     void       	triSwitch(nodeType *head, int choix);
-Cette fonction prend en paramètre une liste chaînée de jeux, un tableau d'emprunt et le nombre d'emprunt, puis parcourt la liste en comparant avec *(strcmp())* les éléments de la liste deux à deux. Si le résultat est positif, on intervertit les deux éléments comparés (par nom), puis on redémarre du début de la liste. Cette fonction fait appel à la fonction **triTypeJeu()** pour trier la liste alphabétique par type.
+Cette fonction prend en paramètre une liste chaînée de jeux et un choix, puis: 
+- cas 1 : parcourt la liste en comparant avec *(strcmp())* les éléments de la liste deux à deux. Si le résultat est positif, on intervertit les deux éléments comparés (par nom), puis on redémarre du début de la liste.
+- cas 2 : de la même manière que pour le tri alphabétique, on parcourt la liste en intervertissant les éléments en fonction de leur type.
 
 <br/>
 
@@ -187,7 +194,17 @@ La fonction retourne la liste modifée.
 
 <br/>
 
+### Prototype affichage adhérents
+	void		printAdherent(adherent *tabAdh[],int nbAdh);
+
+
+
 ### Prototypes pour nouvel emprunt/réservation
+	int			rechercheAdherent(adherent *tabAdh[], char nom[], char prenom[], int nbAdh);
+
+
+<br/>
+
 	void 		nouvelAdherent(adherent *tabAdh[], date date, int *nbAdh, int max);
 Cette fonction prend en paramètre un tableau d'adhérents, une date d'inscription, le nombre d'adhérents dans le tableau et la taille max du tableau.
 Elle crée un nouveau pointeur alloué dynamiquement, assigne un identifiant à l'adhérent puis demande les informations nécessaires à son enregistrement.
@@ -219,7 +236,8 @@ Elle permet de savoir si l'adherent a déjà emprunté ou reservé le jeu en que
 
 <br/>
 
-	empResa 	*ajoutEmpResa(empResa tabEmpresa[], adherent *tabAdh[], nodeType* head, char name[25], int nbJeux, int *nb, int *nbMax, date date, int i, int idJeu);
+	empResa		*ajoutEmpResa(empResa tabEmpResa[], adherent *tabAdh[], int *nbEmpResa, int *nbEmpResaMax, int *idEmpResa, int idAdh, int idJeu, char date[]);
+
 Cette fonction prend en paramètre le tableau d'emprunt/réservation, le tableau d'adherent, le nombre d'adherent, le nombbre max du tableau, la date, la position de l'adherent dans  sont tableau et l'id du jeu.
 Elle permet de réallouer le tableau avec 5 place en plus si *(\*nb == \*nbMax)* puis copie ce/tte nouvel/le emprunt/réservation dans le tableau puis ajoute +1 au nombre d'emprunt. Pour finir elle retourne le nouveau tableau
 
