@@ -6,7 +6,7 @@
 
 #if defined WIN32
 #define CLEAN_SCREEN "cls"
-#elif defined(unix) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__))
+#else
 #define CLEAN_SCREEN "clear"
 #endif
 
