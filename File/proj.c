@@ -124,8 +124,8 @@ nodeType	*ChargementJeux(nodeType *head, int *nbJeux) // utilise les trois fonct
 	jeu	currentGame;
 	int	i;
 
-	flot = fopen("File/Fichier bin/jeux.bin", "rb");
-	//flot = fopen("File/Fichier txt/jeux.txt", "r");
+	//flot = fopen("File/Fichier bin/jeux.bin", "rb");
+	flot = fopen("File/Fichier txt/jeux.txt", "r");
 
 	if (flot == NULL)
 	{
@@ -133,13 +133,13 @@ nodeType	*ChargementJeux(nodeType *head, int *nbJeux) // utilise les trois fonct
 		exit(1);
 	}
 
-	fread(nbJeux, sizeof(int), 1, flot);
-	//fscanf(flot, "%d", nbJeux);
+	//fread(nbJeux, sizeof(int), 1, flot);
+	fscanf(flot, "%d", nbJeux);
 
 	for (i = 0; i < *nbJeux; i++)
 	{
-		fread(&currentGame, sizeof(jeu), 1, flot);
-		//fscanf(flot, "%d%s%s%d" , &currentGame.idJeu, currentGame.nom, currentGame.type, &currentGame.nbExp);	
+		//fread(&currentGame, sizeof(jeu), 1, flot);
+		fscanf(flot, "%d%s%s%d" , &currentGame.idJeu, currentGame.nom, currentGame.type, &currentGame.nbExp);	
 		formatTxt(currentGame.nom);
 		createLastNode(&head, currentGame);
 	}
