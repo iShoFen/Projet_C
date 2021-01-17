@@ -11,7 +11,7 @@
 #endif
 
 
-typedef struct  // crée la strcuture pour le fichier jeux
+typedef struct  // crée la strcuture pour le fichier jeux.bin
 {
     int idJeu;
     char nom[26];
@@ -19,7 +19,7 @@ typedef struct  // crée la strcuture pour le fichier jeux
     int nbExp;
 } jeu;
 
-typedef struct  // crée la structure pour le fichier adhérents
+typedef struct  // crée la structure pour le fichier adherents.bin
 {
     int idAdherent;
     char civilite[4];
@@ -28,7 +28,7 @@ typedef struct  // crée la structure pour le fichier adhérents
     char dateIns[11];
 } adherent;
 
-typedef struct  // crée la structure pour le fichier adhérents et réservation
+typedef struct  // crée la structure pour les fichiers emprunts.bin et reservations.bin
 {
     int idEmpResa;
     int idAdherent;
@@ -63,7 +63,7 @@ nodeType   	*ChargementJeux(nodeType* head, int *nbJeux);
 // prototypes chargement adhérents
 int        	ChargementAdherents(adherent *tab[], int max);
 
-// prototypes chargement emprunts/réservation
+// prototypes chargement emprunts/réservations
 empResa		*lectureEmpResa(empResa tabEmpResa[], int nbEmpResa, FILE *flot);
 emprunt    	*ChargementEmprunt (int *nbEmp, int *idEmp);
 reservation	*ChargementReservation (int *nbResa, int *idResa);
@@ -91,7 +91,7 @@ void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux);
 // prototype pour nouveau jeu
 nodeType	*saisieNouveauJeu(nodeType *head, int *nbJeux);
 
-// prototypes pour nouvel emprunt/réservation
+// prototypes pour nouvel/le emprunt/réservation
 int			rechercheAdherent(adherent *tabAdh[], char nom[], char prenom[], int nbAdh);
 void 		nouvelAdherent(adherent *tabAdh[], char nom[], char prenom[], char date[], int *nbAdh, int max);
 int 		dateIns(adherent *tabAdh[], char date[], int i);

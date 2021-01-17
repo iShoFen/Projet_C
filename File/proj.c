@@ -56,7 +56,7 @@ void 		upperLower(char tab[]) // met la première lettre en maj et le reste en m
 	}
 }
 
-void		formatTxt(char tab[]) // remplace le carac _ par un espace.
+void		formatTxt(char tab[]) // remplace le carac _ par un espace
 {
 	unsigned int i;
 
@@ -113,12 +113,12 @@ nodeType	*lastNode(nodeType *head) // renvoie le dernier maillon d'une liste
 void		createLastNode(nodeType **head, jeu game) // utilise les deux fonctions ci-dessus pour créer un maillon à la fin de la liste chaînée
 {
 	if (*head != NULL)
-		lastNode(*head)->next = createNode(game); // si *head existe, on prend le dernier maillon et on assigne a son next le maillon que l'on veut ins?rer	
+		lastNode(*head)->next = createNode(game); // si *head existe, on prend le dernier maillon et on assigne a son next le maillon que l'on veut insérer	
 	else
-		*head = createNode(game); // sinon, on crée le maillon ? la place du premier
+		*head = createNode(game); // sinon, on crée le maillon à la place du premier
 }
 
-nodeType	*ChargementJeux(nodeType *head, int *nbJeux) // utilise les trois fonctions ci-dessus pour charger le fichier 'jeux.txt' dans la liste chaînée
+nodeType	*ChargementJeux(nodeType *head, int *nbJeux) // utilise les trois fonctions ci-dessus pour charger le fichier jeux.bin dans la liste chaînée
 {
 	FILE *flot;
 	jeu	currentGame;
@@ -150,7 +150,7 @@ nodeType	*ChargementJeux(nodeType *head, int *nbJeux) // utilise les trois fonct
 }
 
 
-int 		ChargementAdherents(adherent *tabAdh[], int max)  //charge le contenu du fichier adherent en mémoire 
+int 		ChargementAdherents(adherent *tabAdh[], int max)  //charge le contenu du fichier adherents.bin dans le tableau de pointeur
 {
 	FILE *flot;
 	int i = 0, nbAdh;
@@ -203,7 +203,7 @@ empResa		*lectureEmpResa(empResa tabEmpResa[], int nbEmpResa, FILE *flot) // lit
 	return tabEmpResa;
 }
 
-emprunt		*ChargementEmprunt(int *nbEmp, int *idEmp) // charge le contenu du fichier emprunt en mémoire
+emprunt		*ChargementEmprunt(int *nbEmp, int *idEmp) // charge le contenu du fichier emprunts.bin dans le tableau
 {
 	emprunt *tabEmp;
 	FILE *flot;
@@ -234,7 +234,7 @@ emprunt		*ChargementEmprunt(int *nbEmp, int *idEmp) // charge le contenu du fich
 	return tabEmp;
 }
 
-reservation *ChargementReservation(int *nbResa, int *idResa) // charge le contenu du fichier reservation en m?moire
+reservation *ChargementReservation(int *nbResa, int *idResa) // charge le contenu du fichier reservations.bin dans le tableau
 {
 	reservation *tabResa;
 	FILE *flot;
@@ -437,7 +437,7 @@ void		printJeu(nodeType* head, emprunt tabEmp[], int nbJeux, int nbEmp) // affic
 	headbis = copyList(head);
 	//headbis = triFusionL(headbis, nbJeux, 0); // Version de tri alternative programmé par Samuel
 	//headbis = triFusionL(headbis, nbJeux, 1);
-	triSwitchJeu(headbis, 0);  // Version dévelopé par Antoine
+	triSwitchJeu(headbis, 0);  // Version développée par Antoine
 	triSwitchJeu(headbis, 1);
 	currentNode = headbis;
 
@@ -474,7 +474,7 @@ void		printAllJeu(nodeType* head, emprunt tabEmp[], int nbEmp) // affiche une li
 		currentGame.nbExp -= comptNbEmp(tabEmp, currentGame.idJeu, nbEmp);
 		printf("%-6d | %-25s | %-12s | %d", currentGame.idJeu, currentGame.nom, currentGame.type, currentGame.nbExp);
 		if(currentGame.nbExp < 1)
-			printf("\tCe jeu n'est plus disponible.\n");
+			printf("\tCe jeu n'est plus disponible\n");
 		else
 			printf("\n");
 		currentNode = currentNode->next;
@@ -498,7 +498,7 @@ int			menuJeu(void) // menu affichage choix jeu
 }
 
 
-void		printAdherent(adherent *tabAdh[],int nbAdh)
+void		printAdherent(adherent *tabAdh[],int nbAdh) // affiche tous les adhérents (FONCTION N° 2)
 {
 	int i;
 
@@ -533,7 +533,7 @@ int 		dateEmp(emprunt tabEmp[], char date[], int i) // vérifie la date d'emprun
 	return 0;
 }
 
-void 		printEmprunt(emprunt tabEmp[], char date[], int nbEmp) // affiche tout les emprunt en cours (FONCTION N° 2)
+void 		printEmprunt(emprunt tabEmp[], char date[], int nbEmp) // affiche tous les emprunts en cours (FONCTION N° 3)
 {
 	int i;
 
@@ -548,7 +548,7 @@ void 		printEmprunt(emprunt tabEmp[], char date[], int nbEmp) // affiche tout le
 	}
 }
 
-void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux) // affiche toute les reservation en cours en focntion du jeux donné (FONCTION N° 3)
+void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux) // affiche toute les réservations en cours en focntion du jeu donné (FONCTION N° 4)
 {
 	int i, idJeu, trouve, k = 0;
 	char nomJeu[26];
@@ -583,7 +583,7 @@ void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux) /
 }
 
 
-nodeType	*saisieNouveauJeu(nodeType *head, int *nbJeux) // crée un nouveau jeu
+nodeType	*saisieNouveauJeu(nodeType *head, int *nbJeux) // crée un nouveau jeu (FONCTION N° 5)
 {
 	jeu game;
 	
@@ -622,7 +622,7 @@ int			rechercheAdherent(adherent *tabAdh[], char nom[], char prenom[], int nbAdh
 	return -1;
 }
 
-void 		nouvelAdherent(adherent *tabAdh[], char nom[], char prenom[], char date[], int *nbAdh, int max) // crée un nouvel adherent
+void 		nouvelAdherent(adherent *tabAdh[], char nom[], char prenom[], char date[], int *nbAdh, int max) // crée un nouvel adhérent
 {
 	char civ[4];
 
@@ -662,7 +662,7 @@ void 		nouvelAdherent(adherent *tabAdh[], char nom[], char prenom[], char date[]
 	*nbAdh+= 1;
 }
 
-int 		dateIns(adherent *tabAdh[], char date[], int i) // vérifie la validité de l'adherent
+int 		dateIns(adherent *tabAdh[], char date[], int i) // vérifie la validité de l'adhérent
 {
 	int ji, jn, mi, mn, ai, an;
 	sscanf(date, "%d/%d/%d", &jn, &mn, &an);
@@ -728,7 +728,7 @@ int			rechercheJeu(nodeType* head, char name[], int nbJeux, int *trouve) // perm
 	return -1;
 }
 
-int			rechercheJeuxAct(empResa tabEmpResa[], int idJeu, int idAdh, int nbEmp) // recherche si un adherent à déjà un emprunt ou réservation du jeu
+int			rechercheJeuxAct(empResa tabEmpResa[], int idJeu, int idAdh, int nbEmp) // recherche si un adhérent à déjà un emprunt ou réservation du jeu
 {
 	int i;
 
@@ -767,7 +767,7 @@ empResa		*ajoutEmpResa(empResa tabEmpResa[], adherent *tabAdh[], int *nbEmpResa,
 	return tabEmpResa;
 }
 
-emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* head, char date[], int *nbAdh, int *nbEmp, int *idEmp, int *nbEmpmax, int nbJeux, int max) // saisie les informations pour un nouvel emprunt (FONCTION N° 2)
+emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* head, char date[], int *nbAdh, int *nbEmp, int *idEmp, int *nbEmpmax, int nbJeux, int max) // saisie les informations pour un nouvel emprunt (FONCTION N° 6)
 {
 	char nom[16], prenom[16], jeu[26], choix[4];
 	int idAdh, idJeu, trouve;
@@ -870,7 +870,7 @@ emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* he
 	}
 }
 
-reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt tabEmp[], nodeType* head, char date[], int *nbAdh, int *nbResa,  int *idResa, int *nbResaMax, int nbEmp, int nbJeux, int max) // saisie les informations pour une nouvelle reservation (FONCTION N° 3)
+reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt tabEmp[], nodeType* head, char date[], int *nbAdh, int *nbResa,  int *idResa, int *nbResaMax, int nbEmp, int nbJeux, int max) // saisie les informations pour une nouvelle reservation (FONCTION N° 7)
 {
 	char nom[16], prenom[16], jeu[26], choix[4];
 	int idAdh, idJeu, trouve;
@@ -965,7 +965,7 @@ reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt
 }
 
 
-int			printEmpResa(empResa tabEmpResa[], int nbEmpResa, int id) // affiche les emprunt ou réservations d'un adherent.
+int			printEmpResa(empResa tabEmpResa[], int nbEmpResa, int id) // affiche les emprunts ou réservationss d'un adhérent.
 {
 	int j, k;
 
@@ -1003,7 +1003,7 @@ int			rechercheResa(reservation tabResa[], int nbResa, int idjeu) // recherche s
 	return -1;
 }
 
-emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int *nbEmp, int *idEmp, int *nbResa, int nbAdh, char date[]) // retourne un jeu et regarde si une réservation peu passer en emprunt (FONCTION N°6)
+emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int *nbEmp, int *idEmp, int *nbResa, int nbAdh, char date[]) // retourne un jeu et regarde si une réservation peu passer en emprunt (FONCTION N°8)
 {
 	int idjeu, idAdh, idResa, val;
 	char nom[16], prenom[16];
@@ -1069,7 +1069,7 @@ emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int
 	return tabEmp;	
 }
 
-reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbResa, int nbAdh) // Annule une réservation (FONCTION N°7)
+reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbResa, int nbAdh) // Annule une réservation (FONCTION N°9)
 {
 	int idAdh, val;
 	char nom[16], prenom[16];
@@ -1118,7 +1118,7 @@ reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbRe
 }	
 
 
-void 		saveJeux(nodeType *head, int nbJeux) //sauvegarde la liste de jeux dans son File/fichier binaire
+void 		saveJeux(nodeType *head, int nbJeux) //sauvegarde la liste de jeux dans son fichier binaire
 {
 	nodeType* currentNode = head;
 	jeu	currentGame;
@@ -1146,7 +1146,7 @@ void 		saveJeux(nodeType *head, int nbJeux) //sauvegarde la liste de jeux dans s
 	fclose(flot);
 }
 
-void 		saveAdh(adherent **tabAdh, int nbAdh) // sauvegarde le tableau de pointeur d'adherents dans son File/fichier binaire
+void 		saveAdh(adherent **tabAdh, int nbAdh) // sauvegarde le tableau de pointeur d'adhérents dans son fichier binaire
 {
 	FILE *flot;
 	int i;
@@ -1171,7 +1171,7 @@ void 		saveAdh(adherent **tabAdh, int nbAdh) // sauvegarde le tableau de pointeu
 	fclose(flot);
 }
 
-void 		saveEmp(emprunt *tabEmp, int nbEmp) // sauvegarde le tableau d'emprunt dans son File/fichier binaire
+void 		saveEmp(emprunt *tabEmp, int nbEmp) // sauvegarde le tableau d'emprunts dans son fichier binaire
 {
 	FILE *flot;
 
@@ -1189,7 +1189,7 @@ void 		saveEmp(emprunt *tabEmp, int nbEmp) // sauvegarde le tableau d'emprunt da
 	fclose(flot);
 }
 
-void 		saveResa(reservation *tabResa, int nbResa) // sauvegarde le tableau de reservation dans son File/fichier binaire
+void 		saveResa(reservation *tabResa, int nbResa) // sauvegarde le tableau de réservations dans son fichier binaire
 {
 	FILE *flot;
 
@@ -1207,7 +1207,7 @@ void 		saveResa(reservation *tabResa, int nbResa) // sauvegarde le tableau de re
 	fclose(flot);
 }
 
-void 		sauvegarder(nodeType *head, adherent **tabAdh, emprunt *tabEmp, reservation *tabResa, int nbJeux, int nbAdh, int nbEmp, int nbResa) // sauvegarde tout les tableaux  dans un File/fichier binaire
+void 		sauvegarder(nodeType *head, adherent **tabAdh, emprunt *tabEmp, reservation *tabResa, int nbJeux, int nbAdh, int nbEmp, int nbResa) // sauvegarde tous les tableaux  dans leur fichier binaire
 {
 	saveJeux(head, nbJeux);
 	saveAdh(tabAdh, nbAdh);
@@ -1251,7 +1251,7 @@ void 		saveJeuxTxt(nodeType *head, int nbJeux, char src[]) //sauvegarde la liste
 	fclose(flot);
 }
 
-void 		saveAdhTxt(adherent **tabAdh, int nbAdh, char src[]) //sauvegarde le tableau de pointeur d'adherents dans son fichier texte
+void 		saveAdhTxt(adherent **tabAdh, int nbAdh, char src[]) //sauvegarde le tableau de pointeur d'adhérents dans son fichier texte
 {
 	FILE *flot;
 	char dest[100];
@@ -1277,7 +1277,7 @@ void 		saveAdhTxt(adherent **tabAdh, int nbAdh, char src[]) //sauvegarde le tabl
 	fclose(flot);	
 }
 
-void 		saveEmpTxt(emprunt *tabEmp, int nbEmp, char src[]) //sauvegarde le tableau d'emprunt dans son fichier texte
+void 		saveEmpTxt(emprunt *tabEmp, int nbEmp, char src[]) //sauvegarde le tableau d'emprunts dans son fichier texte
 {
 	FILE *flot;
 	char dest[100];
@@ -1303,7 +1303,7 @@ void 		saveEmpTxt(emprunt *tabEmp, int nbEmp, char src[]) //sauvegarde le tablea
 	fclose(flot);
 }
 
-void 		saveResaTxt(reservation *tabResa, int nbResa, char src[]) //sauvegarde le tableau de reservation dans son fichier texte
+void 		saveResaTxt(reservation *tabResa, int nbResa, char src[]) //sauvegarde le tableau de réservations dans son fichier texte
 {
 	FILE *flot;
 	char dest[100];
@@ -1329,7 +1329,7 @@ void 		saveResaTxt(reservation *tabResa, int nbResa, char src[]) //sauvegarde le
 	fclose(flot);
 }
 
-void 		sauvegarderTxt(nodeType *head, adherent **tabAdh, emprunt *tabEmp, reservation *tabResa, int nbJeux, int nbAdh, int nbEmp, int nbResa) // sauvegarde totu les tableaux en binaire et txt
+void 		sauvegarderTxt(nodeType *head, adherent **tabAdh, emprunt *tabEmp, reservation *tabResa, int nbJeux, int nbAdh, int nbEmp, int nbResa) // sauvegarde tous les tableaux en binaire et txt
 {
 	char dest[100] = "File/Fichier txt";
 	char choix[4];
@@ -1355,7 +1355,7 @@ void 		sauvegarderTxt(nodeType *head, adherent **tabAdh, emprunt *tabEmp, reserv
 	printf("Sauvegarde des réservation en texte terminée\n");
 }
 
-int			menuSave(void) // menu affichage save (FONCTION N° 8)
+int			menuSave(void) // menu affichage save (FONCTION N° 10)
 {
 	int choix;
 
