@@ -26,7 +26,6 @@ void global(void)
     choix = menu(); // permet de connaitre le choix de l'utilsiateur
 	while (choix != 11)
     {
-        fflush(stdin); // permet de vider le buffer 
         switch (choix)
         {
             case 1 : choix = menuJeu(); // permet de connaitre choix de l'utilisateur pour l' affichage des jeux
@@ -37,7 +36,6 @@ void global(void)
                             case 1 : printJeu(head, tabEmp, nbJeux, nbEmp); break; // affiche les jeux triés par ordre alphabétique par type
                             case 2 : printAllJeu(head, tabEmp, nbEmp); break; // affiche tous les jeux
                         }
-                        fflush(stdin);
                         printf("\ntapez entrée pour continuer ...");
                         c = getchar();
                         choix = menuJeu();
@@ -58,13 +56,11 @@ void global(void)
                             case 1 : sauvegarder(head, tabAdh, tabEmp, tabResa, nbJeux, nbAdh, nbEmp, nbResa); break; // sauvegarde en fichier binaire
                             case 2 : sauvegarderTxt(head, tabAdh, tabEmp, tabResa, nbJeux, nbAdh, nbEmp, nbResa); break; // sauvegarde en fichier binaire et texte
                         }
-                        fflush(stdin);
                         printf("\ntapez entrée pour continuer ...");
                         c = getchar();
                         choix = menuSave();
                     } break;
         }
-        fflush(stdin);
         printf("\ntapez entrée pour continuer ...");
         c = getchar();
         choix = menu();

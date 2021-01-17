@@ -18,7 +18,7 @@ int 		menu(void) // Menu principal
 	printf("| 10.	SAUVEGARDER						|\n");
 	printf("| 11.	QUITTER							|\n");                  
 	printf("-----------------------------------------------------------------\n");
-    scanf("%d",&choix);
+    scanf("%d%*c",&choix);
 	system(CLEAN_SCREEN);
 
     return choix;
@@ -491,7 +491,7 @@ int			menuJeu(void) // menu affichage choix jeu
 	printf("| 2.	Afficher tous les jeux 					|\n");
 	printf("| 3.	QUITTER							|\n");
 	printf("-----------------------------------------------------------------\n");
-    scanf("%d",&choix);
+    scanf("%d%*c",&choix);
 	system(CLEAN_SCREEN);
 
     return choix;
@@ -543,7 +543,7 @@ void 		printEmprunt(emprunt tabEmp[], char date[], int nbEmp) // affiche tout le
 	{
 		printf("%-10d | %-11d | %-6d | %s", tabEmp[i].idEmpResa, tabEmp[i].idAdherent, tabEmp[i].idJeu, tabEmp[i].dateEmpResa);
 		if (dateEmp(tabEmp, date, i) == -1)
-			printf("\tRetard de l'emprunt.");
+			printf("\tRetard de l'emprunt");
 		printf("\n");
 	}
 }
@@ -701,7 +701,7 @@ int         RetardEmp(emprunt tabEmp[], char date[], int nbEmp, int idAdh)
 {
 	int i;
 	for (i = 0; i < nbEmp; i++)
-		if (tabEmp[idAdh].idAdherent == idAdh+1 && dateEmp(tabEmp, date, i) == -1) 
+		if (tabEmp[i].idAdherent == idAdh && dateEmp(tabEmp, date, i) == -1) 
 			return -1;
 	return 0;
 }
@@ -810,7 +810,7 @@ emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* he
 				strcpy(tabAdh[idAdh]->dateIns, date); 
 			else
 				return tabEmp;
-		}	
+		}
 		if (comptNbEmpAdh(tabEmp, idAdh+1, *nbEmp) == 3)
 		{
 			printf("\nL'adhérent %s %s a déjà 3 emprunts, retour au menu ...\n", tabAdh[idAdh]->nom, tabAdh[idAdh]->prenom);
@@ -1035,12 +1035,12 @@ emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int
 		else
 		{
 			printf("Choissisez un numéro d'emprunt pour cet adhérent : ");
-			scanf("%d", &val);
+			scanf("%d%*c", &val);
 
 			while (tabEmp[val-1].idAdherent != idAdh+1)
 			{
 				printf("Votre numéro d'emprunt pour cet adhérent n'est pas correct veuillez resaisir : ");
-				scanf("%d", &val);
+				scanf("%d%*c", &val);
 			}
 
 			idjeu = tabEmp[val-1].idJeu;
@@ -1048,6 +1048,7 @@ emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int
 			printf("\nRetour bien effectué.\n");
 			
 			idResa = rechercheResa(tabResa, *nbResa, idjeu);
+
 			if ( idResa != -1)
 			{	
 				if (comptNbEmpAdh(tabEmp, tabResa[idResa].idAdherent, *nbEmp) < 3 && dateIns(tabAdh, date, idAdh) != -1  && RetardEmp(tabEmp, date, *nbEmp, idAdh+1) != -1)
@@ -1364,7 +1365,7 @@ int			menuSave(void) // menu affichage save (FONCTION N° 8)
 	printf("| 2.	Sauvegarder en File/fichier binaire et texte.		|\n");
 	printf("| 3.	QUITTER							|\n");
 	printf("-----------------------------------------------------------------\n");
-    scanf("%d",&choix);
+    scanf("%d%*c",&choix);
 	system(CLEAN_SCREEN);
 
     return choix;

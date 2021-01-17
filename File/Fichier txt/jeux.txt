@@ -1,7 +1,7 @@
 Nombre total de jeux : 12
 
 ID JEU |            NOM            |     TYPE     | NB EXEMPL
-1      | Cyberpunk                 | Video        | 5
+1      | Cyberpunk 2077            | Video        | 5
 2      | Kapla                     | Plateau      | 2
 3      | Monopoly                  | Plateau      | 3
 4      | Scrabble                  | Plateau      | 5
