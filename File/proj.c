@@ -418,11 +418,9 @@ int			comptNbEmp(emprunt tabEmp[], int idJeu, int nbEmp) // compte le nombre d'e
 void		freeListe(nodeType *head) // libère la liste chaînée
 {
 	nodeType *currentNode = head;
-	jeu	currentGame;
 	
 	while (currentNode != NULL) 
 	{
-		currentGame = currentNode->game;
 		free(currentNode);
 		currentNode = currentNode->next;
     }

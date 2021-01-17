@@ -10,7 +10,7 @@ void global(void)
 
     reservation *tabResa;
 
-    char date[11], c;
+    char date[11];
 	int choix;
     int nbAdh, nbEmp, nbResa, nbJeux;
     int idEmp, nbEmpMax, idResa, nbResaMax;
@@ -37,7 +37,7 @@ void global(void)
                             case 2 : printAllJeu(head, tabEmp, nbEmp); break; // affiche tous les jeux
                         }
                         printf("\ntapez entrée pour continuer ...");
-                        c = getchar();
+                        getchar();
                         choix = menuJeu();
                     } break;
             case 2 : printAdherent(tabAdh, nbAdh) ; break; // affiche tous les adhérents
@@ -57,12 +57,12 @@ void global(void)
                             case 2 : sauvegarderTxt(head, tabAdh, tabEmp, tabResa, nbJeux, nbAdh, nbEmp, nbResa); break; // sauvegarde en fichier binaire et texte
                         }
                         printf("\ntapez entrée pour continuer ...");
-                        c = getchar();
+                        getchar();
                         choix = menuSave();
                     } break;
         }
         printf("\ntapez entrée pour continuer ...");
-        c = getchar();
+        getchar();
         choix = menu();
     }
     
