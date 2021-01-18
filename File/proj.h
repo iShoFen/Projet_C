@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<time.h> //bibliotèque pour la lecture de la date système
+#include<time.h> //bibliotèque pour la lecture de la date système 
 #include<ctype.h> // bibliotqèue pour le upper et lower char
 
 #if defined WIN32
