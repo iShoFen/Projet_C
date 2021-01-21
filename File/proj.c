@@ -428,9 +428,9 @@ void		freeListe(nodeType *head) // libère la liste chaînée
 
 void		printJeu(nodeType* head, emprunt tabEmp[], int nbJeux, int nbEmp) // affiche une liste de jeux
 {
-	nodeType	*headbis, *currentNode;
+	nodeType *headbis, *currentNode;
 	jeu	currentGame;
-	int k = 0;
+	int k = 0, nbExp;
 
 	headbis = copyList(head);
 	//headbis = triFusionL(headbis, nbJeux, 0); // Version de tri alternative programmé par Samuel
@@ -442,14 +442,14 @@ void		printJeu(nodeType* head, emprunt tabEmp[], int nbJeux, int nbEmp) // affic
     while (currentNode != NULL) 
 	{
 		currentGame = currentNode->game;
-		currentGame.nbExp -= comptNbEmp(tabEmp, currentGame.idJeu, nbEmp);
-		if (currentGame.nbExp > 0)
+		nbExp = currentGame.nbExp - comptNbEmp(tabEmp, currentGame.idJeu, nbEmp);
+		if (nbExp > 0)
 		{
 			k++;
 			if (k == 1)
 				printf("\nID JEU |            NOM            |     TYPE     | NB EXEMPL\n");
 
-			printf("%-6d | %-25s | %-12s | %d\n", currentGame.idJeu, currentGame.nom, currentGame.type, currentGame.nbExp);
+			printf("%-6d | %-25s | %-12s | %d/%d\n", currentGame.idJeu, currentGame.nom, currentGame.type, nbExp, currentGame.nbExp);
 		}
 		currentNode = currentNode->next;
     }
@@ -463,15 +463,16 @@ void		printAllJeu(nodeType* head, emprunt tabEmp[], int nbEmp) // affiche une li
 {
 	nodeType*	currentNode = head;
 	jeu			currentGame;
+	int nbExp;
 
 	printf("\nID JEU |            NOM            |     TYPE     | NB EXEMPL\n");
 
     while (currentNode != NULL) 
 	{
 		currentGame = currentNode->game;
-		currentGame.nbExp -= comptNbEmp(tabEmp, currentGame.idJeu, nbEmp);
-		printf("%-6d | %-25s | %-12s | %d", currentGame.idJeu, currentGame.nom, currentGame.type, currentGame.nbExp);
-		if(currentGame.nbExp < 1)
+		nbExp = currentGame.nbExp-comptNbEmp(tabEmp, currentGame.idJeu, nbEmp);
+		printf("%-6d | %-25s | %-12s | %d/%d", currentGame.idJeu, currentGame.nom, currentGame.type, nbExp, currentGame.nbExp);
+		if(nbExp < 1)
 			printf("\tCe jeu n'est plus disponible\n");
 		else
 			printf("\n");
@@ -556,6 +557,12 @@ void 		printResa(reservation *tabResa, nodeType *head, int nbResa, int nbJeux) /
 	nomJeu[strlen(nomJeu)-1] = '\0';
 	upperLower(nomJeu);
 
+	if (strcmp(nomJeu,"Stop") == 0)
+	{
+		printf("\nRetour au menu...\n");
+		return;
+	}
+
 	idJeu = rechercheJeu(head, nomJeu, nbJeux, &trouve);
 
 	if (trouve == -1)
@@ -592,19 +599,31 @@ nodeType	*saisieNouveauJeu(nodeType *head, int *nbJeux) // crée un nouveau jeu 
 	game.nom[strlen(game.nom)-1] = '\0';
 	upperLower(game.nom);
 
+	if (strcmp(game.nom, "Stop") == 0)
+		goto Stop;
+
 	printf("Un Type : "); 
 	fgets(game.type,14,stdin);
 	game.type[strlen(game.type)-1] = '\0';
 	upperLower(game.type);
 
+	if (strcmp(game.type, "Stop") == 0)
+		goto Stop;
+
 	printf("Un nombre d'exemplaire(s) : ");
-	scanf("%d",&game.nbExp);
-	
+	scanf("%d%*c",&game.nbExp);
+
+	if (game.nbExp == 0)
+		goto Stop;
 
 	createLastNode(&head, game);
 	*nbJeux+= 1;
 	printf("\nJeu bien ajouté.\n");
 	
+	return head;
+
+	Stop :
+	printf("\nRetour au menu ...\n");
 	return head;
 }
 
@@ -775,10 +794,16 @@ emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* he
 	nom[strlen(nom)-1] = '\0';
 	upper(nom);
 
+	if (strcmp(nom,"STOP") == 0)
+		goto Stop;
+
 	printf("Le Prénom : ");
 	fgets(prenom,16,stdin);
 	prenom[strlen(prenom)-1] = '\0';
 	upperLower(prenom);
+
+	if (strcmp(prenom,"Stop") == 0)
+		goto Stop;
 
 	idAdh = rechercheAdherent(tabAdh, nom, prenom, *nbAdh);
 		
@@ -829,6 +854,9 @@ emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* he
 	jeu[strlen(jeu)-1] = '\0';
 	upperLower(jeu);
 
+	if (strcmp(jeu,"Stop") == 0)
+		goto Stop;
+
 	idJeu = rechercheJeu(head, jeu, nbJeux, &trouve);
 
 	if (trouve == -1)
@@ -866,6 +894,10 @@ emprunt 	*saisieNouvelEmprunt(adherent *tabAdh[], emprunt tabEmp[], nodeType* he
 				return ajoutEmpResa(tabEmp, tabAdh, nbEmp, nbEmpmax, idEmp, idAdh, idJeu, date);
 		}
 	}
+
+	Stop :
+	printf("\nRetour au menu ...\n");
+	return tabEmp;
 }
 
 reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt tabEmp[], nodeType* head, char date[], int *nbAdh, int *nbResa,  int *idResa, int *nbResaMax, int nbEmp, int nbJeux, int max) // saisie les informations pour une nouvelle reservation (FONCTION N° 7)
@@ -878,10 +910,16 @@ reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt
 	nom[strlen(nom)-1] = '\0';
 	upper(nom);
 
+	if (strcmp(nom,"STOP") == 0)
+		goto Stop;
+
 	printf("Le Prénom : ");
 	fgets(prenom,16,stdin);
 	prenom[strlen(prenom)-1] = '\0';
 	upperLower(prenom);
+
+	if (strcmp(prenom,"Stop") == 0)
+		goto Stop;
 
 	idAdh = rechercheAdherent(tabAdh, nom, prenom, *nbAdh);
 		
@@ -927,6 +965,9 @@ reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt
 	jeu[strlen(jeu)-1] = '\0';
 	upperLower(jeu);
 
+	if (strcmp(jeu,"Stop") == 0)
+		goto Stop;
+
 	idJeu = rechercheJeu(head, jeu, nbJeux, &trouve);
 
 	if (trouve == -1)
@@ -960,6 +1001,10 @@ reservation *saisieNouvelResa(adherent *tabAdh[], reservation tabResa[], emprunt
 				return ajoutEmpResa(tabResa, tabAdh, nbResa, nbResaMax, idResa, idAdh, idJeu, date);
 		}
 	}
+
+	Stop :
+	printf("\nRetour au menu ...\n");
+	return tabResa;
 }
 
 
@@ -1011,10 +1056,16 @@ emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int
 	nom[strlen(nom)-1] = '\0';
 	upper(nom);
 
+	if (strcmp(nom,"STOP") == 0)
+		goto Stop;
+
 	printf("Entrez le Prénom : ");
 	fgets(prenom,16,stdin);
 	prenom[strlen(prenom)-1] = '\0';
 	upperLower(prenom);
+
+	if (strcmp(prenom,"Stop") == 0)
+		goto Stop;
 
 	idAdh = rechercheAdherent(tabAdh, nom, prenom, nbAdh);
 
@@ -1035,10 +1086,16 @@ emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int
 			printf("Choissisez un numéro d'emprunt pour cet adhérent : ");
 			scanf("%d%*c", &val);
 
+			if (val == 0)
+				goto Stop;
+
 			while (tabEmp[val-1].idAdherent != idAdh+1)
 			{
 				printf("Votre numéro d'emprunt pour cet adhérent n'est pas correct veuillez resaisir : ");
 				scanf("%d%*c", &val);
+
+				if (val == 0)
+					goto Stop;
 			}
 
 			idjeu = tabEmp[val-1].idJeu;
@@ -1065,6 +1122,10 @@ emprunt		*RetourJeu(adherent *tabAdh[], emprunt tabEmp[], emprunt tabResa[], int
 		}		
 	}
 	return tabEmp;	
+
+	Stop :
+	printf("\nRetour au menu ...\n");
+	return tabEmp;
 }
 
 reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbResa, int nbAdh) // Annule une réservation (FONCTION N°9)
@@ -1077,10 +1138,16 @@ reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbRe
 	nom[strlen(nom)-1] = '\0';
 	upper(nom);
 
+	if (strcmp(nom,"STOP") == 0)
+		goto Stop;
+
 	printf("Le Prénom : ");
 	fgets(prenom,16,stdin);
 	prenom[strlen(prenom)-1] = '\0';
 	upperLower(prenom);
+
+	if (strcmp(prenom,"Stop") == 0)
+		goto Stop;
 
 	idAdh = rechercheAdherent(tabAdh, nom, prenom, nbAdh);
 
@@ -1099,12 +1166,18 @@ reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbRe
 		else
 		{		
 			printf("Choissisez un numéro de réservation pour cet adhérent : ");
-			scanf("%d", &val);
+			scanf("%d%*c", &val);
+
+			if (val == 0)
+				goto Stop;
 
 			while (tabResa[val-1].idAdherent != idAdh+1)
 			{
 				printf("Votre numéro de réservation n'est pas correct pour cet adhérent veuillez ressaisir : ");
-				scanf("%d", &val);
+				scanf("%d%*c", &val);
+
+				if (val == 0)
+					goto Stop;
 			}
 
 			tabResa = decalerGauche(tabResa, nbResa, val-1);
@@ -1113,6 +1186,10 @@ reservation	*AnnulationResa(adherent *tabAdh[], reservation tabResa[], int *nbRe
 			return tabResa;
 		}	
 	}
+
+	Stop :
+	printf("\nRetour au menu ...\n");
+	return tabResa;
 }	
 
 
