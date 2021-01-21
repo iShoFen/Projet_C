@@ -1,4 +1,4 @@
-Nombre d'emprunt en cours : 13
+Nombre d'emprunt en cours : 14
 
 ID EMPRUNT | ID ADHERENT | ID JEU |   DATE
 1          | 1           | 11     | 15/12/2020
@@ -14,3 +14,4 @@ ID EMPRUNT | ID ADHERENT | ID JEU |   DATE
 11         | 3           | 11     | 02/01/2021
 12         | 4           | 3      | 11/01/2021
 13         | 1           | 10     | 07/01/2021
+14         | 6           | 1      | 21/01/2021
